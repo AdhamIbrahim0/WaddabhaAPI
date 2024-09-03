@@ -4,9 +4,9 @@ using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.BL.MappingProfiles
 {
-    public class CategoryProfile : Profile
+    public class CategoryMappings : Profile
     {
-        public CategoryProfile()
+        public CategoryMappings()
         {
             CreateMap<CategoryReadDTO, Category>().ReverseMap();
         }

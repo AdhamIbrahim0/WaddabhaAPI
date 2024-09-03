@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Waddabha.BL.Managers.Categories;
 
 namespace Waddabha.API.Controllers
@@ -15,6 +16,7 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll()
         {
             var categories = _categoryManager.GetAll();

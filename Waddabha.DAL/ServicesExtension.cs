@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Waddabha.DAL.Data.Context;
+using Waddabha.DAL.Data.Models;
 using Waddabha.DAL.Repositories.Categories;
 using Waddabha.DAL.Repositories.Contracts;
 using Waddabha.DAL.Repositories.Messages;
@@ -17,6 +19,17 @@ namespace Waddabha.DAL
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("Default")));
 
+            //Identity
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+            });
+
+            //Repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
