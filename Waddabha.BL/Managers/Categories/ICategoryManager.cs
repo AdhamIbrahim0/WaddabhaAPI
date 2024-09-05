@@ -9,6 +9,5 @@ namespace Waddabha.BL.Managers.Categories
         CategoryReadDTO Update(int id, CategoryUpdateDTO categoryUpdateDTO);
         CategoryReadDTO Add(CategoryAddDTO categoryAddDTO);
         void Delete(int id);
-
     }
 }
