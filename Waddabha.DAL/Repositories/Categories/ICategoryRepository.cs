@@ -5,6 +5,6 @@ namespace Waddabha.DAL.Repositories.Categories
 {
     public interface ICategoryRepository : IGenericRepository<Category>
     {
-
+        //Category GetCategoryWithServices(int id);  
     }
 }

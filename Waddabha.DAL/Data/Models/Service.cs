@@ -8,7 +8,7 @@ namespace Waddabha.DAL.Data.Models
         public decimal InitialPrice { get; set; }
         public string Description { get; set; }
         public string BuyerInstructions { get; set; }
-        public List<string> Images { get; set; }
+        public string ImagePath { get; set; }
         public int BuyersCount { get; set; }
         public string Status { get; set; } = "Pending"; // Enum
         public double? Rating { get; set; }
