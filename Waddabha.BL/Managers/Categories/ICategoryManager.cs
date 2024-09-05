@@ -5,5 +5,6 @@ namespace Waddabha.BL.Managers.Categories
     public interface ICategoryManager
     {
         IEnumerable<CategoryReadDTO> GetAll();
+
     }
 }
