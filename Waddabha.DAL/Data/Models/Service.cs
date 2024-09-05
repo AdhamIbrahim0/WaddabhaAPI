@@ -15,6 +15,9 @@ namespace Waddabha.DAL.Data.Models
         public virtual Category Category { get; set; }
         [ForeignKey("Category")]
         public int CategoryId { get; set; }
+        public virtual Seller Seller { get; set; }
+        [ForeignKey("Seller")]
+        public string SellerId { get; set; }
         public virtual ICollection<Contract>? Contracts { get; set; }
     }
 }

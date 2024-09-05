@@ -15,6 +15,11 @@ namespace Waddabha.DAL.Data.Models
         public virtual Service Service { get; set; }
         [ForeignKey("Service")]
         public int ServiceId { get; set; }
-
+        public virtual Buyer Buyer { get; set; }
+        [ForeignKey("Buyer")]
+        public string BuyerId { get; set; }
+        public virtual Seller Seller { get; set; }
+        [ForeignKey("Seller")]
+        public string SellerId { get; set; }
     }
 }
