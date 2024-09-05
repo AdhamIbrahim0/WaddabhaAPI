@@ -7,6 +7,6 @@ namespace Waddabha.BL.Managers.Auth
     {
         Task<string> Register(UserRegisterDTO userDTO);
         Task<string> Login(UserLoginDTO userDTO);
-        string GenerateJWT(User user);
+        Task<string> GenerateJWT(User user);
     }
 }

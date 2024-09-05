@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Waddabha.BL.Managers.Categories;
 
 namespace Waddabha.API.Controllers
@@ -16,11 +17,12 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult GetAll()
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var categories = _categoryManager.GetAll();
-            return Ok(categories);
+            return Ok(userId);
         }
     }
 }

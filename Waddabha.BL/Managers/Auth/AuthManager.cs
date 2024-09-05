@@ -28,8 +28,9 @@ namespace Waddabha.BL.Managers.Auth
         {
             User user = _mapper.Map<UserRegisterDTO, User>(userDTO);
             var result = await _userManager.CreateAsync(user, userDTO.Password);
-            if (result.Succeeded)
+            if (result.Succeeded && userDTO.Role != "Admin") // Enum
             {
+                await _userManager.AddToRoleAsync(user, userDTO.Role);
                 return "Registration successful";
             }
             else
@@ -47,13 +48,13 @@ namespace Waddabha.BL.Managers.Auth
                 if (result.Succeeded)
                 {
                     Console.WriteLine("Welcome");
-                    return GenerateJWT(user);
+                    return await GenerateJWT(user);
                 }
             }
             throw new Exception("Invalid email or password");
         }
 
-        public string GenerateJWT(User user)
+        public async Task<string> GenerateJWT(User user)
         {
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JwtSettings:Secret"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -62,11 +63,11 @@ namespace Waddabha.BL.Managers.Auth
             {
                 new Claim(JwtRegisteredClaimNames.Sub , user.UserName!),
                 new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier , user.Id),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
 
-            //var userRoles = await _userManager.GetRolesAsync(user);
-            //claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+            var userRoles = await _userManager.GetRolesAsync(user);
+            claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["JwtSettings:Issuer"],
@@ -74,7 +75,7 @@ namespace Waddabha.BL.Managers.Auth
                 expires: DateTime.Now.AddMinutes(Convert.ToInt32(_configuration["JwtSettings:ExpiryMinutes"])),
                 signingCredentials: creds,
                 claims: claims
-                );
+               );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
