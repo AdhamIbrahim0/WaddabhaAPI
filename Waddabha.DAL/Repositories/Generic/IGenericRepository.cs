@@ -7,5 +7,6 @@
         TEntity? Add(TEntity entity);
         TEntity? Update(TEntity entity);
         void Delete(TEntity entity);
+
     }
 }
