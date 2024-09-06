@@ -19,14 +19,14 @@ namespace Waddabha.API.Controllers
         public async Task<IActionResult> Register(UserRegisterDTO userDTO)
         {
             var result = await _authManager.Register(userDTO);
-            return Ok(result);
+            return Ok(new { message = result });
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO userDTO)
         {
             var result = await _authManager.Login(userDTO);
-            return Ok(result);
+            return Ok(new { token = result, message = "Logged In Successfully" });
         }
     }
 }
