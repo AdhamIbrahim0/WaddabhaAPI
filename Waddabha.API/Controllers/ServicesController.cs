@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Waddabha.BL.Managers.Services;
 
 namespace Waddabha.API.Controllers
@@ -14,11 +13,12 @@ namespace Waddabha.API.Controllers
         {
             _serviceManager = serviceManager;
         }
+
         [HttpGet]
         public IActionResult GetAll()
         {
-            var service = _serviceManager.GetAll();
-            return Ok(service);
+            var services = _serviceManager.GetAll();
+            return Ok(services);
         }
 
         [HttpGet("{id}")]
@@ -35,6 +35,5 @@ namespace Waddabha.API.Controllers
             _serviceManager.Delete(service.Id);
             return NoContent();
         }
-
     }
 }
