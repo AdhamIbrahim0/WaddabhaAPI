@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Auth;
 using Waddabha.BL.Managers.Auth;
 
@@ -18,15 +19,17 @@ namespace Waddabha.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDTO userDTO)
         {
-            var result = await _authManager.Register(userDTO);
-            return Ok(new { message = result });
+            var token = await _authManager.Register(userDTO);
+            var response = ApiResponse<string>.SuccessResponse(token);
+            return Ok(response);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDTO userDTO)
         {
-            var result = await _authManager.Login(userDTO);
-            return Ok(new { token = result, message = "Logged In Successfully" });
+            var token = await _authManager.Login(userDTO);
+            var response = ApiResponse<string>.SuccessResponse(token);
+            return Ok(response);
         }
     }
 }

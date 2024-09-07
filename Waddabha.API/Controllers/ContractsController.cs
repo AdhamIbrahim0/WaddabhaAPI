@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Waddabha.API.ResponseModels;
+using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.Managers.Contracts;
 
 namespace Waddabha.API.Controllers
@@ -18,15 +19,17 @@ namespace Waddabha.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var contract = _contractManager.GetAll();
-            return Ok(contract);
+            var contracts = _contractManager.GetAll();
+            var response = ApiResponse<IEnumerable<ContractReadDTO>>.SuccessResponse(contracts);
+            return Ok(response);
         }
+
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var contract = _contractManager.GetById(id);
-            return Ok(contract);
+            var response = ApiResponse<ContractReadDTO>.SuccessResponse(contract);
+            return Ok(response);
         }
-
     }
 }
