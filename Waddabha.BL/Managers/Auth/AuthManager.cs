@@ -31,7 +31,7 @@ namespace Waddabha.BL.Managers.Auth
             if (result.Succeeded && userDTO.Role != "Admin") // Enum
             {
                 await _userManager.AddToRoleAsync(user, userDTO.Role);
-                return "Registration successful";
+                return await GenerateJWT(user);
             }
             else
             {
