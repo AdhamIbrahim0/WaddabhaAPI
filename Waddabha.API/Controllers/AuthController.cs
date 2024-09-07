@@ -20,7 +20,7 @@ namespace Waddabha.API.Controllers
         public async Task<IActionResult> Register(UserRegisterDTO userDTO)
         {
             var token = await _authManager.Register(userDTO);
-            var response = ApiResponse<string>.SuccessResponse(token);
+            var response = ApiResponse<object>.SuccessResponse(new { token });
             return Ok(response);
         }
 
@@ -28,7 +28,7 @@ namespace Waddabha.API.Controllers
         public async Task<IActionResult> Login(UserLoginDTO userDTO)
         {
             var token = await _authManager.Login(userDTO);
-            var response = ApiResponse<string>.SuccessResponse(token);
+            var response = ApiResponse<object>.SuccessResponse(new { token });
             return Ok(response);
         }
     }
