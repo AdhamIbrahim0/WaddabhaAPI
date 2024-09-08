@@ -5,5 +5,6 @@ namespace Waddabha.DAL.Repositories.Users
 {
     public interface IUserRepository : IGenericRepository<User>
     {
+
     }
 }
