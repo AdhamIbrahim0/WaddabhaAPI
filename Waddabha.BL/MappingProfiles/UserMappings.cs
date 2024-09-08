@@ -12,6 +12,8 @@ namespace Waddabha.BL.MappingProfiles
             CreateMap<UserRegisterDTO, User>().ReverseMap();
             CreateMap<UserLoginDTO, User>().ReverseMap();
             CreateMap<GetUserDTO,User>().ReverseMap();
+            CreateMap<EditUserDTO, User>().ReverseMap();
+
 
         }
     }
