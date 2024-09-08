@@ -38,7 +38,7 @@ namespace Waddabha.BL.Managers.Users
             JwtSecurityToken jwtToken = null;
             var data = handler.ReadJwtToken(token);
             var userId = data.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var user = _userManager.FindByIdAsync(userId);
+            var user = await  _userManager.FindByIdAsync(userId);
             var result = _mapper.Map<GetUserDTO>(user);
             return result;
             }

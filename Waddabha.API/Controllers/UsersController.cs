@@ -19,10 +19,10 @@ namespace Waddabha.API.Controllers
         }
         [HttpGet("me")]
         [Authorize]
-        public async Task<IActionResult> GetUserDetails()
+        public async Task<IActionResult> GetUserDetails([FromHeader] string Authorization)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            if (string.IsNullOrEmpty(token))
+            var token = Authorization.ToString().Trim().Replace("bearer ", "");
+                if (string.IsNullOrEmpty(token))
             {
                 return BadRequest("Token is missing");
             }
