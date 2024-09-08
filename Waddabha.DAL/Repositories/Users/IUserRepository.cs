@@ -5,7 +5,6 @@ namespace Waddabha.DAL.Repositories.Users
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        Task<User?> FindByTokenAsync(string token);
 
     }
 }

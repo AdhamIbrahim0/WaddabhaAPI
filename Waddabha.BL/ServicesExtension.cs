@@ -7,6 +7,7 @@ using Waddabha.BL.Managers.Auth;
 using Waddabha.BL.Managers.Categories;
 using Waddabha.BL.Managers.Contracts;
 using Waddabha.BL.Managers.Services;
+using Waddabha.BL.Managers.Users;
 using Waddabha.BL.MappingProfiles;
 
 namespace Waddabha.BL
@@ -22,6 +23,7 @@ namespace Waddabha.BL
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped<IContractManager,ContractManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<IUserManager, UserManager>();
 
             var jwtSettings = configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value!);

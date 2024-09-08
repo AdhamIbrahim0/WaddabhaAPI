@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Waddabha.API.ResponseModels;
+using Waddabha.BL.DTOs.Categories;
+using Waddabha.BL.DTOs.Users;
 using Waddabha.BL.Managers.Users;
 
 namespace Waddabha.API.Controllers
@@ -9,8 +12,8 @@ namespace Waddabha.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private UserManager _userManager;
-        public UsersController(UserManager userManager)
+        private IUserManager _userManager;
+        public UsersController(IUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -25,8 +28,9 @@ namespace Waddabha.API.Controllers
             }
             try
             {
-                var userDto = await _userManager.GetUserFromTokenAsync(token);
-                return Ok(userDto);
+                var user = await _userManager.GetUserFromTokenAsync(token);
+                var result = ApiResponse<GetUserDTO>.SuccessResponse(user);
+                return Ok(result);
             }
             catch (UnauthorizedAccessException)
             {
