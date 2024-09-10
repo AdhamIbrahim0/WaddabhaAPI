@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Waddabha.BL.DTOs.Users;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
+using Waddabha.DAL.Repositories.Users;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Waddabha.BL.Managers.Users
@@ -33,12 +34,11 @@ namespace Waddabha.BL.Managers.Users
                 throw new ArgumentNullException(nameof(token), "Token is required");
             }
 
-            // Retrieve the user based on the token
             var handler = new JwtSecurityTokenHandler();
             JwtSecurityToken jwtToken = null;
             var data = handler.ReadJwtToken(token);
             var userId = data.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-            var user = await  _userManager.FindByIdAsync(userId);
+            var user = await _unitOfWork.UserRepository.GetUserProfileAsync(userId);
             var result = _mapper.Map<GetUserDTO>(user);
             return result;
             }

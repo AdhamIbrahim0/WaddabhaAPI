@@ -8,5 +8,6 @@ namespace Waddabha.BL.Managers.Email
 {
     public interface IEmailManager
     {
+
     }
 }

@@ -16,5 +16,10 @@ namespace Waddabha.DAL.Repositories.Users
         public UserRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public async Task<User> GetUserProfileAsync(string id)
+        {
+            return await _context.Users.Include(u => u.Image).FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

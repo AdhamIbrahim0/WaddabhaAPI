@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Waddabha.BL.CustomExceptions;
 using Waddabha.BL.DTOs.Categories;
+using Waddabha.BL.Managers.UploadImage;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 
@@ -10,10 +11,13 @@ namespace Waddabha.BL.Managers.Categories
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CategoryManager(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IUploadImage _uploadImage;
+
+        public CategoryManager(IUploadImage uploadImage,IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _uploadImage = uploadImage;
         }
 
         public CategoryReadDTO Add(CategoryAddDTO categoryAddDTO)
