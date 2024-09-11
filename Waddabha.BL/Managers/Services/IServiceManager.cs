@@ -10,7 +10,7 @@ namespace Waddabha.BL.Managers.Services
 {
     public interface IServiceManager
     {
-        IEnumerable<ServiceReadDTO> GetAll();
+        IEnumerable<ServiceReadDTO> GetAllServicesByCategory(int id);
         ServiceReadDTO GetById(int id);
         ServiceReadDTO Add(ServiceAddDTO serviceAddDTO);
         ServiceReadDTO Update(int id, ServiceUpdateDTO serviceUpdateDTO);
