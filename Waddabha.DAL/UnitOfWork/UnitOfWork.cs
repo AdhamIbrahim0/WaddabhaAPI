@@ -4,6 +4,7 @@ using Waddabha.DAL.Repositories.Contracts;
 using Waddabha.DAL.Repositories.Messages;
 using Waddabha.DAL.Repositories.Notifications;
 using Waddabha.DAL.Repositories.Services;
+using Waddabha.DAL.Repositories.Users;
 
 namespace Waddabha.DAL
 {
@@ -16,12 +17,14 @@ namespace Waddabha.DAL
         public IMessageRepository MessageRepository { get; }
         public INotificationRepository NotificationRepository { get; }
         public IServiceRepository ServiceRepository { get; }
+        public IUserRepository UserRepository { get; }
 
         public UnitOfWork(ICategoryRepository categoryRepository,
             IContractRepository contractRepository,
             IMessageRepository messageRepository,
             INotificationRepository notificationRepository,
             IServiceRepository serviceRepository,
+            IUserRepository userRepository,
             ApplicationDbContext context)
         {
             CategoryRepository = categoryRepository;
@@ -29,6 +32,8 @@ namespace Waddabha.DAL
             MessageRepository = messageRepository;
             NotificationRepository = notificationRepository;
             ServiceRepository = serviceRepository;
+            UserRepository = userRepository;
+
             _context = context;
         }
 

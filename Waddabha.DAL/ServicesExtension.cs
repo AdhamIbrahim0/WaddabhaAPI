@@ -9,6 +9,7 @@ using Waddabha.DAL.Repositories.Contracts;
 using Waddabha.DAL.Repositories.Messages;
 using Waddabha.DAL.Repositories.Notifications;
 using Waddabha.DAL.Repositories.Services;
+using Waddabha.DAL.Repositories.Users;
 
 namespace Waddabha.DAL
 {
@@ -35,6 +36,7 @@ namespace Waddabha.DAL
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }

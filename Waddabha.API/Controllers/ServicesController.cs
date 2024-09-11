@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Waddabha.API.ResponseModels;
-using Waddabha.BL.DTOs.Categories;
 using Waddabha.BL.DTOs.Services;
 using Waddabha.BL.Managers.Services;
 using Waddabha.DAL.Data.Models;
@@ -22,14 +21,16 @@ namespace Waddabha.API.Controllers
         public IActionResult GetAll()
         {
             var services = _serviceManager.GetAll();
-            return Ok(services);
+            var response = ApiResponse<IEnumerable< ServiceReadDTO>>.SuccessResponse(services);
+            return Ok(response);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var service = _serviceManager.GetById(id);
-            return Ok(service);
+            var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
+            return Ok(response);
         }
 
         [HttpDelete]
