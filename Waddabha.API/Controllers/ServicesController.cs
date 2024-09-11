@@ -17,9 +17,9 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] int categoryId)
         {
-            var services = _serviceManager.GetAll();
+            var services = _serviceManager.GetAllServicesByCategory(categoryId);
             var response = ApiResponse<IEnumerable< ServiceReadDTO>>.SuccessResponse(services);
             return Ok(response);
         }

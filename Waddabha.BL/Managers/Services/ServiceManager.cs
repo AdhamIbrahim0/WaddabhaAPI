@@ -22,9 +22,9 @@ namespace Waddabha.BL.Managers.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ServiceReadDTO> GetAll()
+        public IEnumerable<ServiceReadDTO> GetAllServicesByCategory(int id)
         {
-            var contracts = _unitOfWork.ServiceRepository.GetAll();
+            var contracts = _unitOfWork.ServiceRepository.GetAllServicesByCategory(id);
             var result = _mapper.Map<IEnumerable<Service>, IEnumerable<ServiceReadDTO>>(contracts);
             return result;
         }
