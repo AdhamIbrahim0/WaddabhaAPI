@@ -12,6 +12,9 @@ namespace Waddabha.BL.Managers.Services
     {
         IEnumerable<ServiceReadDTO> GetAll();
         ServiceReadDTO GetById(int id);
+        ServiceReadDTO Add(ServiceAddDTO serviceAddDTO);
+        ServiceReadDTO Update(int id, ServiceUpdateDTO serviceUpdateDTO);
+
         void Delete(int id);
 
     }
