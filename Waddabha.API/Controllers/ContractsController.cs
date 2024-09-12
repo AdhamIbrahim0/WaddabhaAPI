@@ -38,7 +38,7 @@ namespace Waddabha.API.Controllers
         public async Task<IActionResult> Add(ContractAddDTO contractAddDTO)
         {
             var contract = await _contractManager.Add(contractAddDTO);
-            var response = ApiResponse<ContractReadDTO>.SuccessResponse(contract);
+            var response = ApiResponse<ContractAddDTO>.SuccessResponse(contract);
             return Ok(response);
         }
 

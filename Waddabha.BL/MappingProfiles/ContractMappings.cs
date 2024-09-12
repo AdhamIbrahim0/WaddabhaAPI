@@ -16,6 +16,7 @@ namespace Waddabha.BL.MappingProfiles
             public ContractMappings()
             {
                 CreateMap<ContractReadDTO, Contract>().ReverseMap();
+                CreateMap<ContractAddDTO, Contract>().ReverseMap();
             }
         
     }

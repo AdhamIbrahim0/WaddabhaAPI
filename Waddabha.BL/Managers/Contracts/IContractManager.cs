@@ -13,7 +13,7 @@ namespace Waddabha.BL.Managers.Contracts
     {
         Task<IEnumerable<ContractReadDTO>> GetAll();
         Task<ContractReadDTO> GetById(string id);
-        Task<ContractReadDTO> Add(ContractAddDTO categoryAddDTO);
+        Task<ContractAddDTO> Add(ContractAddDTO categoryAddDTO);
         Task Delete(string id);
 
     }

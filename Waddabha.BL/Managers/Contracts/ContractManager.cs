@@ -54,14 +54,14 @@ namespace Waddabha.BL.Managers.Contracts
            await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<ContractReadDTO> Add(ContractAddDTO contractAddDTO)
+        public async Task<ContractAddDTO> Add(ContractAddDTO contractAddDTO)
         {
                 var contract = _mapper.Map<ContractAddDTO, Contract>(contractAddDTO);
                 
                 var result = await _unitOfWork.ContractRepository.AddAsync(contract);
                 await _unitOfWork.SaveChangesAsync();
-                var contractRead = _mapper.Map<Contract, ContractReadDTO>(result);
-                return contractRead;
+                var contractadd = _mapper.Map<Contract, ContractAddDTO>(result);
+                return contractadd;
         }
 
 
