@@ -12,7 +12,7 @@ using Waddabha.DAL.Data.Context;
 namespace Waddabha.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240912004536_Init")]
+    [Migration("20240912124459_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,36 +24,6 @@ namespace Waddabha.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BuyerContract", b =>
-                {
-                    b.Property<string>("BuyerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ContractsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("BuyerId", "ContractsId");
-
-                    b.HasIndex("ContractsId");
-
-                    b.ToTable("BuyerContract");
-                });
-
-            modelBuilder.Entity("ContractSeller", b =>
-                {
-                    b.Property<string>("ContractsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SellerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ContractsId", "SellerId");
-
-                    b.HasIndex("SellerId");
-
-                    b.ToTable("ContractSeller");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -241,6 +211,10 @@ namespace Waddabha.DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("BuyerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -259,6 +233,10 @@ namespace Waddabha.DAL.Migrations
                     b.Property<double?>("Rating")
                         .HasColumnType("float");
 
+                    b.Property<string>("SellerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ServiceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -273,6 +251,10 @@ namespace Waddabha.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("SellerId");
 
                     b.HasIndex("ServiceId");
 
@@ -523,36 +505,6 @@ namespace Waddabha.DAL.Migrations
                     b.HasDiscriminator().HasValue("Seller");
                 });
 
-            modelBuilder.Entity("BuyerContract", b =>
-                {
-                    b.HasOne("Waddabha.DAL.Data.Models.Buyer", null)
-                        .WithMany()
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Waddabha.DAL.Data.Models.Contract", null)
-                        .WithMany()
-                        .HasForeignKey("ContractsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ContractSeller", b =>
-                {
-                    b.HasOne("Waddabha.DAL.Data.Models.Contract", null)
-                        .WithMany()
-                        .HasForeignKey("ContractsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Waddabha.DAL.Data.Models.Seller", null)
-                        .WithMany()
-                        .HasForeignKey("SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -617,11 +569,27 @@ namespace Waddabha.DAL.Migrations
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Contract", b =>
                 {
+                    b.HasOne("Waddabha.DAL.Data.Models.Buyer", "Buyer")
+                        .WithMany("Contracts")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Waddabha.DAL.Data.Models.Seller", "Seller")
+                        .WithMany("Contracts")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Waddabha.DAL.Data.Models.Service", "Service")
                         .WithMany("Contracts")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Seller");
 
                     b.Navigation("Service");
                 });
@@ -716,8 +684,15 @@ namespace Waddabha.DAL.Migrations
                     b.Navigation("Notifications");
                 });
 
+            modelBuilder.Entity("Waddabha.DAL.Data.Models.Buyer", b =>
+                {
+                    b.Navigation("Contracts");
+                });
+
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Seller", b =>
                 {
+                    b.Navigation("Contracts");
+
                     b.Navigation("Services");
                 });
 #pragma warning restore 612, 618

@@ -191,24 +191,6 @@ namespace Waddabha.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BuyerContract",
-                columns: table => new
-                {
-                    BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ContractsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BuyerContract", x => new { x.BuyerId, x.ContractsId });
-                    table.ForeignKey(
-                        name: "FK_BuyerContract_AspNetUsers_BuyerId",
-                        column: x => x.BuyerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -270,11 +252,25 @@ namespace Waddabha.DAL.Migrations
                     FeedbackComment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ServiceId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SellerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contracts_AspNetUsers_BuyerId",
+                        column: x => x.BuyerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contracts_AspNetUsers_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Contracts_Services_ServiceId",
                         column: x => x.ServiceId,
@@ -302,30 +298,6 @@ namespace Waddabha.DAL.Migrations
                         principalTable: "Services",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContractSeller",
-                columns: table => new
-                {
-                    ContractsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SellerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContractSeller", x => new { x.ContractsId, x.SellerId });
-                    table.ForeignKey(
-                        name: "FK_ContractSeller_AspNetUsers_SellerId",
-                        column: x => x.SellerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ContractSeller_Contracts_ContractsId",
-                        column: x => x.ContractsId,
-                        principalTable: "Contracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -384,25 +356,25 @@ namespace Waddabha.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BuyerContract_ContractsId",
-                table: "BuyerContract",
-                column: "ContractsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Categories_ImageId",
                 table: "Categories",
                 column: "ImageId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Contracts_BuyerId",
+                table: "Contracts",
+                column: "BuyerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contracts_SellerId",
+                table: "Contracts",
+                column: "SellerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contracts_ServiceId",
                 table: "Contracts",
                 column: "ServiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ContractSeller_SellerId",
-                table: "ContractSeller",
-                column: "SellerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Image_ServiceId",
@@ -462,14 +434,6 @@ namespace Waddabha.DAL.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_BuyerContract_Contracts_ContractsId",
-                table: "BuyerContract",
-                column: "ContractsId",
-                principalTable: "Contracts",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Categories_Image_ImageId",
                 table: "Categories",
                 column: "ImageId",
@@ -505,10 +469,7 @@ namespace Waddabha.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BuyerContract");
-
-            migrationBuilder.DropTable(
-                name: "ContractSeller");
+                name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "Messages");
@@ -518,9 +479,6 @@ namespace Waddabha.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

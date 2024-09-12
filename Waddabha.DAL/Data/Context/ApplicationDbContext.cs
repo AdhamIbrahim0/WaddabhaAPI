@@ -18,11 +18,11 @@ namespace Waddabha.DAL.Data.Context
             modelBuilder.Entity<Service>().Property(s => s.InitialPrice).HasColumnType("decimal(18,2)");
             modelBuilder.Entity<Contract>().Property(s => s.Price).HasColumnType("decimal(18,2)");
 
-            modelBuilder.Entity<Buyer>()
-             .HasMany(c => c.Contracts)
-             .WithMany(c => c.Buyer);
-
-         
+            modelBuilder.Entity<Contract>()
+             .HasOne(b => b.Buyer)
+             .WithMany(c => c.Contracts)
+             .HasForeignKey(c => c.BuyerId)
+             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Contract>()
              .HasOne(c => c.Service)
@@ -31,8 +31,10 @@ namespace Waddabha.DAL.Data.Context
              .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Contract>()
-            .HasMany(c => c.Seller)
-            .WithMany(c => c.Contracts);
+            .HasOne(c => c.Seller)
+            .WithMany(c => c.Contracts)
+            .HasForeignKey(s => s.SellerId)
+            .OnDelete(DeleteBehavior.Restrict);
 
 
             modelBuilder.Entity<Image>()
@@ -40,18 +42,18 @@ namespace Waddabha.DAL.Data.Context
             .WithMany(c => c.Images)
             .HasForeignKey(c => c.ServiceId)
             .OnDelete(DeleteBehavior.Restrict);
-         
-            modelBuilder.Entity<Image>()
-             .HasOne(c => c.User)
-            .WithOne(c => c.Image)
-            .HasForeignKey<User>(c=>c.ImageId)
-           .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Image>()
-          .HasOne(c => c.Category)
-          .WithOne(c => c.Image)
-          .HasForeignKey<Category>(c => c.ImageId)
-         .OnDelete(DeleteBehavior.Restrict);
+             .HasOne(c => c.User)
+             .WithOne(c => c.Image)
+             .HasForeignKey<User>(c => c.ImageId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Image>()
+             .HasOne(c => c.Category)
+             .WithOne(c => c.Image)
+             .HasForeignKey<Category>(c => c.ImageId)
+             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Message>()
              .HasOne(c => c.Sender)
@@ -62,16 +64,16 @@ namespace Waddabha.DAL.Data.Context
 
 
             modelBuilder.Entity<Notification>()
-           .HasOne(c => c.User)
-           .WithMany(c => c.Notifications)
-           .HasForeignKey(c => c.UserId)
-           .OnDelete(DeleteBehavior.Restrict);
-
+             .HasOne(c => c.User)
+             .WithMany(c => c.Notifications)
+             .HasForeignKey(c => c.UserId)
+             .OnDelete(DeleteBehavior.Restrict);
+ 
             modelBuilder.Entity<Service>()
-            .HasOne(c => c.Seller)
-            .WithMany(c => c.Services)
-            .HasForeignKey(c => c.SellerId)
-            .OnDelete(DeleteBehavior.Restrict);
+             .HasOne(c => c.Seller)
+             .WithMany(c => c.Services)
+             .HasForeignKey(c => c.SellerId)
+             .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Service>()
              .HasOne(c => c.Category)
