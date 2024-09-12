@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Waddabha.DAL.Data.Enums;
 
 namespace Waddabha.DAL.Data.Models
 {
@@ -7,9 +7,9 @@ namespace Waddabha.DAL.Data.Models
         public string Title { get; set; }
         public string Body { get; set; }
         public string Url { get; set; }
-        public string Category { get; set; } // Enum
-        public virtual User User { get; set; }
-        [ForeignKey("User")]
+
+        public Alert Alert { get; set; }
         public string UserId { get; set; }
+        public User User { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Waddabha.BL.Managers.Contracts
             return result;
         }
 
-        public ContractReadDTO GetById(int id)
+        public ContractReadDTO GetById(string id)
         {
             var contract = _unitOfWork.ContractRepository.GetById(id);
             if (contract == null)
@@ -42,7 +42,7 @@ namespace Waddabha.BL.Managers.Contracts
 
             return result; 
         }
-        public void Delete(int id)
+        public void Delete(string id)
         {
             var contract = _unitOfWork.ContractRepository.GetById(id);
             if (contract == null)

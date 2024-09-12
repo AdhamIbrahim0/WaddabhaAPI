@@ -3,7 +3,7 @@
     public class Seller : User
     {
         public string? JobTitle { get; set; }
-        public virtual ICollection<Service>? Services { get; set; }
-        public virtual ICollection<Contract>? Contracts { get; set; }
+        public ICollection<Service>? Services { get; set; }
+        public ICollection<Contract>? Contracts { get; set; }
     }
 }

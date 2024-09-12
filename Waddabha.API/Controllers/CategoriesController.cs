@@ -27,7 +27,7 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(string id)
         {
             var category = _categoryManager.GetById(id);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
@@ -35,22 +35,22 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(CategoryAddDTO categoryAddDTO)
+        public async Task<IActionResult> Add(CategoryAddDTO categoryAddDTO)
         {
-            var category = _categoryManager.Add(categoryAddDTO);
-            var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
+            var category =await _categoryManager.Add(categoryAddDTO);
+            var response =  ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(string id)
         {
             _categoryManager.Delete(id);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, CategoryUpdateDTO categoryUpdateDTO)
+        public IActionResult Update(string id, CategoryUpdateDTO categoryUpdateDTO)
         {
             var category = _categoryManager.Update(id, categoryUpdateDTO);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);

@@ -18,7 +18,7 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromQuery] int categoryId)
+        public IActionResult GetAll([FromQuery] string categoryId)
         {
             var services = _serviceManager.GetAllServicesByCategory(categoryId);
             var response = ApiResponse<IEnumerable< ServiceReadDTO>>.SuccessResponse(services);
@@ -26,7 +26,7 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(string id)
         {
             var service = _serviceManager.GetById(id);
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
@@ -34,7 +34,7 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpDelete]
-        public IActionResult DeleteById(int id)
+        public IActionResult DeleteById(string id)
         {
             var service = _serviceManager.GetById(id);
             _serviceManager.Delete(service.Id);
@@ -48,7 +48,7 @@ namespace Waddabha.API.Controllers
             return Ok(response);
         }
         [HttpPut("{id}")]
-        public IActionResult Update(int id,ServiceUpdateDTO serviceUpdateDTO)
+        public IActionResult Update(string id,ServiceUpdateDTO serviceUpdateDTO)
         {
             var service = _serviceManager.Update(id, serviceUpdateDTO);
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);

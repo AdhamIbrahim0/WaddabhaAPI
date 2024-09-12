@@ -42,6 +42,7 @@ namespace Waddabha.BL.Managers.Users
             var result = _mapper.Map<GetUserDTO>(user);
             return result;
             }
+
    
     }
 }

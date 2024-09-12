@@ -11,8 +11,8 @@ namespace Waddabha.BL.Managers.Contracts
     public interface IContractManager
     {
         IEnumerable<ContractReadDTO> GetAll();
-        ContractReadDTO GetById(int id);
-        void Delete(int id);
+        ContractReadDTO GetById(string id);
+        void Delete(string id);
 
     }
 }

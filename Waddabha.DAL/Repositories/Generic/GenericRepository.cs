@@ -18,7 +18,7 @@ namespace Waddabha.DAL.Repositories.Generic
             return _context.Set<TEntity>().AsNoTracking();
         }
 
-        public TEntity? GetById(int id)
+        public TEntity? GetById(string id)
         {
             return _context.Set<TEntity>().Find(id);
         }
@@ -26,6 +26,11 @@ namespace Waddabha.DAL.Repositories.Generic
         public TEntity? Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
+            return entity;
+        }
+        public async Task<TEntity>? AddAsync(TEntity entity)
+        {
+          await _context.Set<TEntity>().AddAsync(entity);
             return entity;
         }
 

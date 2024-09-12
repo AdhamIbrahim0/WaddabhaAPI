@@ -20,17 +20,17 @@ namespace Waddabha.BL.Managers.Categories
             _uploadImage = uploadImage;
         }
 
-        public CategoryReadDTO Add(CategoryAddDTO categoryAddDTO)
+        public async Task<CategoryReadDTO> Add(CategoryAddDTO categoryAddDTO)
         {
             var category = _mapper.Map<CategoryAddDTO, Category>(categoryAddDTO);
-            var result = _unitOfWork.CategoryRepository.Add(category);
-            _unitOfWork.SaveChanges();
+            var uploadedImage = await _uploadImage.UploadImageOnCloudinary(categoryAddDTO.Image);
+            //category.Image = uploadedImage;
+            var result = await  _unitOfWork.CategoryRepository.AddAsync(category);
+             await _unitOfWork.SaveChangesAsync();
             var categoryRead = _mapper.Map<Category, CategoryReadDTO>(result);
-
             return categoryRead;
         }
-
-        public void Delete(int id)
+        public void Delete(string id)
         {
             var category = _unitOfWork.CategoryRepository.GetById(id);
             if (category != null)
@@ -47,7 +47,7 @@ namespace Waddabha.BL.Managers.Categories
             return result;
         }
 
-        public CategoryReadDTO GetById(int id)
+        public CategoryReadDTO GetById(string id)
         {
             var category = _unitOfWork.CategoryRepository.GetById(id);
             if (category is null) throw new RecordNotFoundException("Category not found");
@@ -55,7 +55,7 @@ namespace Waddabha.BL.Managers.Categories
             return result;
         }
 
-        public CategoryReadDTO Update(int id, CategoryUpdateDTO categoryUpdateDTO)
+        public CategoryReadDTO Update(string id, CategoryUpdateDTO categoryUpdateDTO)
         {
             var existingCategory = _unitOfWork.CategoryRepository.GetById(id);
 

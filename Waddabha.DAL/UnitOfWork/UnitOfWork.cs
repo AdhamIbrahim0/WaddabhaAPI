@@ -41,5 +41,15 @@ namespace Waddabha.DAL
         {
             _context.SaveChanges();
         }
+        public async Task SaveChangesAsync()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            }
     }
 }

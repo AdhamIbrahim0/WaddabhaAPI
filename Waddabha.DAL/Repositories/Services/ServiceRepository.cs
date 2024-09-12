@@ -11,9 +11,9 @@ namespace Waddabha.DAL.Repositories.Services
         {
         }
 
-        public IEnumerable<Service> GetAllServicesByCategory(int id)
+        public IEnumerable<Service> GetAllServicesByCategory(string id)
         {
-            var services = _context.Services.Where(x=>x.CategoryId == id).AsNoTracking();
+            var services = _context.Services.Where(x => x.CategoryId == id).AsNoTracking();
             return services;
         }
     }

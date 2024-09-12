@@ -25,7 +25,7 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(string id)
         {
             var contract = _contractManager.GetById(id);
             var response = ApiResponse<ContractReadDTO>.SuccessResponse(contract);
