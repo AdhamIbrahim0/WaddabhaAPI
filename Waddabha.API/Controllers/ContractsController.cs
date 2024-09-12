@@ -2,6 +2,8 @@
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.Managers.Contracts;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Waddabha.API.Controllers
 {
@@ -17,17 +19,17 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var contracts = _contractManager.GetAll();
+            var contracts = await _contractManager.GetAll();
             var response = ApiResponse<IEnumerable<ContractReadDTO>>.SuccessResponse(contracts);
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var contract = _contractManager.GetById(id);
+            var contract = await _contractManager.GetById(id);
             var response = ApiResponse<ContractReadDTO>.SuccessResponse(contract);
             return Ok(response);
         }

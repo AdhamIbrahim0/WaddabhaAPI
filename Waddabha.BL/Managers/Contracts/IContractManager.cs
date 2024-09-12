@@ -10,9 +10,9 @@ namespace Waddabha.BL.Managers.Contracts
 {
     public interface IContractManager
     {
-        IEnumerable<ContractReadDTO> GetAll();
-        ContractReadDTO GetById(string id);
-        void Delete(string id);
+        Task<IEnumerable<ContractReadDTO>> GetAll();
+        Task<ContractReadDTO> GetById(string id);
+        Task Delete(string id);
 
     }
 }

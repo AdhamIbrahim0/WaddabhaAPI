@@ -18,18 +18,17 @@ namespace Waddabha.API.Controllers
 
         [HttpGet]
         //[Authorize(Roles = "Admin")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var categories = _categoryManager.GetAll();
+            var categories = await _categoryManager.GetAll();
             var response = ApiResponse<IEnumerable<CategoryReadDTO>>.SuccessResponse(categories);
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var category = _categoryManager.GetById(id);
+            var category = await _categoryManager.GetById(id);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }
@@ -37,25 +36,24 @@ namespace Waddabha.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(CategoryAddDTO categoryAddDTO)
         {
-            var category =await _categoryManager.Add(categoryAddDTO);
-            var response =  ApiResponse<CategoryReadDTO>.SuccessResponse(category);
-            return Ok(response);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
-        {
-            _categoryManager.Delete(id);
-            return NoContent();
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(string id, CategoryUpdateDTO categoryUpdateDTO)
-        {
-            var category = _categoryManager.Update(id, categoryUpdateDTO);
+            var category = await _categoryManager.Add(categoryAddDTO);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _categoryManager.Delete(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(string id, CategoryUpdateDTO categoryUpdateDTO)
+        {
+            var category = await _categoryManager.Update(id, categoryUpdateDTO);
+            var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
+            return Ok(response);
+        }
     }
 }

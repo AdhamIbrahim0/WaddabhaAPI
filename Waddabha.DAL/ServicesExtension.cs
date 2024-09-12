@@ -20,7 +20,6 @@ namespace Waddabha.DAL
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("Default")));
 
-            //Identity
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -30,7 +29,6 @@ namespace Waddabha.DAL
                 options.User.RequireUniqueEmail = true;
             });
 
-            //Repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();

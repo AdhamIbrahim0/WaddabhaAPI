@@ -37,19 +37,10 @@ namespace Waddabha.DAL
             _context = context;
         }
 
-        public void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
+
         public async Task SaveChangesAsync()
         {
-            try
-            {
-                await _context.SaveChangesAsync();
-            }catch(Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-            }
+            await _context.SaveChangesAsync();
+        }
     }
 }

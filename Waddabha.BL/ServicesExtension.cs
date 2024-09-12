@@ -19,6 +19,8 @@ namespace Waddabha.BL
         {
             services.AddAutoMapper(typeof(CategoryMappings));
             services.AddAutoMapper(typeof(UserMappings));
+            services.AddAutoMapper(typeof(ServiceMappings));
+            services.AddAutoMapper(typeof(ContractMappings));
 
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();

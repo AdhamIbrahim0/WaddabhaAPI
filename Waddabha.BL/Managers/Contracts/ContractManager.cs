@@ -24,16 +24,16 @@ namespace Waddabha.BL.Managers.Contracts
 
        
 
-        public IEnumerable<ContractReadDTO> GetAll()
+        public async Task<IEnumerable<ContractReadDTO>> GetAll()
         {
-            var contracts = _unitOfWork.ContractRepository.GetAll();
+            var contracts =await _unitOfWork.ContractRepository.GetAllAsync();
             var result = _mapper.Map<IEnumerable<Contract>,IEnumerable<ContractReadDTO>>(contracts);
             return result;
         }
 
-        public ContractReadDTO GetById(string id)
+        public async Task<ContractReadDTO> GetById(string id)
         {
-            var contract = _unitOfWork.ContractRepository.GetById(id);
+            var contract =await _unitOfWork.ContractRepository.GetByIdAsync(id);
             if (contract == null)
             {
                 throw new Exception("the contract not found!");//handle the error
@@ -42,15 +42,15 @@ namespace Waddabha.BL.Managers.Contracts
 
             return result; 
         }
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var contract = _unitOfWork.ContractRepository.GetById(id);
+            var contract =await _unitOfWork.ContractRepository.GetByIdAsync(id);
             if (contract == null)
             {
                 throw new Exception("Contract Not Found !");
             }
-            _unitOfWork.ContractRepository.Delete(contract);
-            _unitOfWork.SaveChanges();
+           await _unitOfWork.ContractRepository.DeleteAsync(contract);
+           await _unitOfWork.SaveChangesAsync();
         }
 
 

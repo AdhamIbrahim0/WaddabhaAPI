@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Waddabha.DAL.Data.Context;
 
 namespace Waddabha.DAL.Repositories.Generic
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity>
-    where TEntity : class
+        where TEntity : class
     {
         protected readonly ApplicationDbContext _context;
 
@@ -13,36 +15,32 @@ namespace Waddabha.DAL.Repositories.Generic
             _context = context;
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return _context.Set<TEntity>().AsNoTracking();
+            return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
-        public TEntity? GetById(string id)
+        public async Task<TEntity?> GetByIdAsync(string id)
         {
-            return _context.Set<TEntity>().Find(id);
+            return await _context.Set<TEntity>().FindAsync(id);
         }
 
-        public TEntity? Add(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
-            return entity;
-        }
-        public async Task<TEntity>? AddAsync(TEntity entity)
-        {
-          await _context.Set<TEntity>().AddAsync(entity);
+            await _context.Set<TEntity>().AddAsync(entity);
             return entity;
         }
 
-        public void Delete(TEntity entity)
+        public Task DeleteAsync(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
+            return Task.CompletedTask;
         }
 
-        public TEntity? Update(TEntity entity)
+        public Task<TEntity> UpdateAsync(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);
-            return entity;
+            return Task.FromResult(entity);
         }
     }
 }

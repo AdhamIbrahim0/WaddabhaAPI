@@ -21,16 +21,15 @@ namespace Waddabha.BL.Managers.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-
-        public IEnumerable<ServiceReadDTO> GetAllServicesByCategory(string id)
+        public async Task<IEnumerable<ServiceReadDTO>> GetAllServicesByCategory(string id)
         {
-            var contracts = _unitOfWork.ServiceRepository.GetAllServicesByCategory(id);
+            var contracts =await _unitOfWork.ServiceRepository.GetAllServicesByCategory(id);
             var result = _mapper.Map<IEnumerable<Service>, IEnumerable<ServiceReadDTO>>(contracts);
             return result;
         }
-        public ServiceReadDTO GetById(string id)
+        public async Task<ServiceReadDTO> GetById(string id)
         {
-            var service = _unitOfWork.ServiceRepository.GetById(id);
+            var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
             if(service == null)
             {
                 throw new Exception();//handle the error 
@@ -38,30 +37,30 @@ namespace Waddabha.BL.Managers.Services
             var result = _mapper.Map<Service,ServiceReadDTO>(service);
             return result;
         }
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
 
-            var service = _unitOfWork.ServiceRepository.GetById(id);
+            var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
             if (service == null)
             {
                 throw new Exception();
             }
-            _unitOfWork.ServiceRepository.Delete(service);
-            _unitOfWork.SaveChanges();
+           await _unitOfWork.ServiceRepository.DeleteAsync(service);
+            _unitOfWork.SaveChangesAsync();
 
         }
-        public ServiceReadDTO Add(ServiceAddDTO serviceAddDTO)
+        public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO)
         {
             var service = _mapper.Map<ServiceAddDTO, Service>(serviceAddDTO);
-            var result = _unitOfWork.ServiceRepository.Add(service);
-            _unitOfWork.SaveChanges();
+            var result =await _unitOfWork.ServiceRepository.AddAsync(service);
+          await  _unitOfWork.SaveChangesAsync();
             var serviceRead = _mapper.Map<Service, ServiceReadDTO>(result);
 
             return serviceRead;
         }
-        public ServiceReadDTO Update(string id, ServiceUpdateDTO serviceUpdateDTO)
+        public async Task<ServiceReadDTO> Update(string id, ServiceUpdateDTO serviceUpdateDTO)
         {
-            var existingService = _unitOfWork.ServiceRepository.GetById(id);
+            var existingService =await _unitOfWork.ServiceRepository.GetByIdAsync(id);
 
             if (existingService == null)
             {
@@ -70,9 +69,9 @@ namespace Waddabha.BL.Managers.Services
             if (existingService.Id == id)
             {
                 _mapper.Map(serviceUpdateDTO, existingService);
-                var result = _unitOfWork.ServiceRepository.Update(existingService);
+                var result =await _unitOfWork.ServiceRepository.UpdateAsync(existingService);
 
-                _unitOfWork.SaveChanges();
+                _unitOfWork.SaveChangesAsync();
                 var serviceRead = _mapper.Map<Service, ServiceReadDTO>(result);
 
                 return serviceRead;

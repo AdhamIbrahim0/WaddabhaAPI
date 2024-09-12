@@ -24,49 +24,49 @@ namespace Waddabha.BL.Managers.Categories
         {
             var category = _mapper.Map<CategoryAddDTO, Category>(categoryAddDTO);
             var uploadedImage = await _uploadImage.UploadImageOnCloudinary(categoryAddDTO.Image);
-            //category.Image = uploadedImage;
+            category.Image = uploadedImage;
             var result = await  _unitOfWork.CategoryRepository.AddAsync(category);
              await _unitOfWork.SaveChangesAsync();
             var categoryRead = _mapper.Map<Category, CategoryReadDTO>(result);
             return categoryRead;
         }
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var category = _unitOfWork.CategoryRepository.GetById(id);
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
             if (category != null)
             {
-                _unitOfWork.CategoryRepository.Delete(category);
-                _unitOfWork.SaveChanges();
+                _unitOfWork.CategoryRepository.DeleteAsync(category);
+                _unitOfWork.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<CategoryReadDTO> GetAll()
+        public async Task<IEnumerable<CategoryReadDTO>> GetAll()
         {
-            var categories = _unitOfWork.CategoryRepository.GetAll();
+            var categories =await _unitOfWork.CategoryRepository.GetAllAsync();
             var result = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryReadDTO>>(categories);
             return result;
         }
 
-        public CategoryReadDTO GetById(string id)
+        public async Task<CategoryReadDTO> GetById(string id)
         {
-            var category = _unitOfWork.CategoryRepository.GetById(id);
+            var category =await _unitOfWork.CategoryRepository.GetByIdAsync(id);
             if (category is null) throw new RecordNotFoundException("Category not found");
             var result = _mapper.Map<Category, CategoryReadDTO>(category);
             return result;
         }
 
-        public CategoryReadDTO Update(string id, CategoryUpdateDTO categoryUpdateDTO)
+        public async Task<CategoryReadDTO> Update(string id, CategoryUpdateDTO categoryUpdateDTO)
         {
-            var existingCategory = _unitOfWork.CategoryRepository.GetById(id);
+            var existingCategory = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
 
             if (existingCategory is null) throw new RecordNotFoundException("Category not found");
 
             if (existingCategory.Id == id)
             {
                 _mapper.Map(categoryUpdateDTO, existingCategory);
-                var result = _unitOfWork.CategoryRepository.Update(existingCategory);
+                var result = await _unitOfWork.CategoryRepository.UpdateAsync(existingCategory);
 
-                _unitOfWork.SaveChanges();
+                _unitOfWork.SaveChangesAsync();
                 var categoryRead = _mapper.Map<Category, CategoryReadDTO>(result);
 
                 return categoryRead;
