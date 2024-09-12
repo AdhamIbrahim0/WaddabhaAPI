@@ -4,6 +4,7 @@ using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.Managers.Contracts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Waddabha.BL.DTOs.Categories;
 
 namespace Waddabha.API.Controllers
 {
@@ -33,5 +34,20 @@ namespace Waddabha.API.Controllers
             var response = ApiResponse<ContractReadDTO>.SuccessResponse(contract);
             return Ok(response);
         }
+        [HttpPost]
+        public async Task<IActionResult> Add(ContractAddDTO contractAddDTO)
+        {
+            var contract = await _contractManager.Add(contractAddDTO);
+            var response = ApiResponse<ContractReadDTO>.SuccessResponse(contract);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _contractManager.Delete(id);
+            return NoContent();
+        }
+
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Waddabha.BL.DTOs.Categories;
 using Waddabha.BL.DTOs.Contracts;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
@@ -51,6 +52,16 @@ namespace Waddabha.BL.Managers.Contracts
             }
            await _unitOfWork.ContractRepository.DeleteAsync(contract);
            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<ContractReadDTO> Add(ContractAddDTO contractAddDTO)
+        {
+                var contract = _mapper.Map<ContractAddDTO, Contract>(contractAddDTO);
+                
+                var result = await _unitOfWork.ContractRepository.AddAsync(contract);
+                await _unitOfWork.SaveChangesAsync();
+                var contractRead = _mapper.Map<Contract, ContractReadDTO>(result);
+                return contractRead;
         }
 
 

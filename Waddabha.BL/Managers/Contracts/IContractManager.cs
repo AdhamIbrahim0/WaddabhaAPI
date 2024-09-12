@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Waddabha.BL.DTOs.Categories;
 using Waddabha.BL.DTOs.Contracts;
 
 namespace Waddabha.BL.Managers.Contracts
@@ -12,6 +13,7 @@ namespace Waddabha.BL.Managers.Contracts
     {
         Task<IEnumerable<ContractReadDTO>> GetAll();
         Task<ContractReadDTO> GetById(string id);
+        Task<ContractReadDTO> Add(ContractAddDTO categoryAddDTO);
         Task Delete(string id);
 
     }
