@@ -109,7 +109,7 @@ namespace Waddabha.BL.Managers.Auth
                 await _unitOfWork.SaveChangesAsync();
                 var message = new MimeMessage
                 {
-                    From = { new MailboxAddress("Waddabha", "sm6229639@gmail.com") },
+                    From = { new MailboxAddress("Waddabha", "waddabha072@gmail.com") },
                     To = { new MailboxAddress(user.Fname, email) },
                     Subject = "Your OTP Code",
                     Body = new TextPart("plain") { Text = $"Your OTP Code is: {otp}" }
@@ -120,7 +120,7 @@ namespace Waddabha.BL.Managers.Auth
                     client.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
 
                     await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-                    await client.AuthenticateAsync("sm6229639@gmail.com", "wcffnlwtgbocomxo");
+                    await client.AuthenticateAsync("waddabha072@gmail.com", "ftad yssu owic xdvl");
 
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);
