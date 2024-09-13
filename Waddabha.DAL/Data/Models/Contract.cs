@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Waddabha.DAL.Data.Models
 {
@@ -21,5 +22,7 @@ namespace Waddabha.DAL.Data.Models
         public virtual Seller Seller { get; set; }
         [ForeignKey("Seller")]
         public string SellerId { get; set; }
+        public virtual ChatRoom ChatRoom { get; set; }
+        public int ChatRoomId { get; set; }
     }
 }

@@ -9,11 +9,11 @@ namespace Waddabha.DAL.Repositories.Messages
     public class MessageRepository : GenericRepository<Message>, IMessageRepository
     {
        
-        private readonly ApplicationDbContext _context;
+      
 
         public MessageRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
+
         }
 
         public async Task<Message> AddAsync(Message entity)
