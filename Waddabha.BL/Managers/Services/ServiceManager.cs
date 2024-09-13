@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Waddabha.BL.DTOs.Categories;
 using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.DTOs.Services;
+using Waddabha.BL.Managers.UploadImage;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 
@@ -16,10 +17,12 @@ namespace Waddabha.BL.Managers.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public ServiceManager(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IUploadImage _uploadImage;
+        public ServiceManager(IUploadImage uploadImage,IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _uploadImage = uploadImage;
         }
         public async Task<IEnumerable<ServiceReadDTO>> GetAllServicesByCategory(string id)
         {
@@ -51,8 +54,22 @@ namespace Waddabha.BL.Managers.Services
         }
         public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO)
         {
-            var service = _mapper.Map<ServiceAddDTO, Service>(serviceAddDTO);
-            var result =await _unitOfWork.ServiceRepository.AddAsync(service);
+            var newService = new Service
+            {
+                Name = serviceAddDTO.Name,
+                InitialPrice = serviceAddDTO.InitialPrice,
+                Description = serviceAddDTO.Description,
+                BuyerInstructions = serviceAddDTO.BuyerInstructions,
+                SellerId = serviceAddDTO.SellerId,
+                CategoryId = serviceAddDTO.CategoryId
+            };
+
+            var uploadedImages = await _uploadImage.UploadImagesOnCloudinary(serviceAddDTO.Images);
+            newService.Images = uploadedImages;
+
+
+
+            var result =await _unitOfWork.ServiceRepository.AddAsync(newService);
             await  _unitOfWork.SaveChangesAsync();
             var serviceRead = _mapper.Map<Service, ServiceReadDTO>(result);
 

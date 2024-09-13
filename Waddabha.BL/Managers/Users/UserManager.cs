@@ -39,7 +39,7 @@ namespace Waddabha.BL.Managers.Users
             var data = handler.ReadJwtToken(token);
             var userId = data.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var user = await _unitOfWork.UserRepository.GetUserProfileAsync(userId);
-            var result = _mapper.Map<GetUserDTO>(user);
+            var result = _mapper.Map<User, GetUserDTO>(user);
             return result;
             }
 
