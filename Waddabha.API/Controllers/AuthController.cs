@@ -36,10 +36,14 @@ namespace Waddabha.API.Controllers
         {
             if (email == null)
             {
-                throw new Exception("email is required");
+                throw new Exception("البريد الإلكتروني مطلوب");
             }
+
             await _authManager.FindByEmailAsync(email);
-            return Ok();
+
+            var successResponse = ApiResponse<string>.SuccessResponse("تم إرسال رمز التحقق بنجاح");
+            return Ok(successResponse);
+
         }
 
         [HttpPost("verify")]
@@ -49,15 +53,16 @@ namespace Waddabha.API.Controllers
 
             if (!result)
             {
-                var errorResponse = ApiResponse<string>.ErrorResponse(new List<string> { "OTP verification failed or invalid code." });
+                var errorResponse = ApiResponse<string>.ErrorResponse(new List<string> { "فشل التحقق من رمز التحقق أو الرمز غير صحيح." });
                 return BadRequest(errorResponse);
             }
             else
             {
-                var successResponse = ApiResponse<string>.SuccessResponse("Password has been reset successfully.");
+                var successResponse = ApiResponse<string>.SuccessResponse("تم إعادة تعيين كلمة المرور بنجاح.");
                 return Ok(successResponse);
             }
         }
+
 
 
     }
