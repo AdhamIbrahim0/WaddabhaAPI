@@ -55,5 +55,6 @@ namespace Waddabha.DAL.Data.Context
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<ChatRoom> ChatRooms { get; set; }
     }
 }

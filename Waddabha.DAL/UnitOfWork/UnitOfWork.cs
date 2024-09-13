@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Waddabha.DAL.Data.Context;
 using Waddabha.DAL.Repositories.Categories;
+using Waddabha.DAL.Repositories.ChatRooms;
 using Waddabha.DAL.Repositories.Contracts;
 using Waddabha.DAL.Repositories.Messages;
 using Waddabha.DAL.Repositories.Notifications;
@@ -13,16 +14,13 @@ namespace Waddabha.DAL
     {
         private readonly ApplicationDbContext _context;
 
-
-      
-        public UnitOfWork(ApplicationDbContext context)
-        {
         public ICategoryRepository CategoryRepository { get; }
         public IContractRepository ContractRepository { get; }
         public IMessageRepository MessageRepository { get; }
         public INotificationRepository NotificationRepository { get; }
         public IServiceRepository ServiceRepository { get; }
         public IUserRepository UserRepository { get; }
+        public IChatRoomRepository  ChatRoomRepository { get; }
 
         public UnitOfWork(ICategoryRepository categoryRepository,
             IContractRepository contractRepository,
@@ -30,8 +28,10 @@ namespace Waddabha.DAL
             INotificationRepository notificationRepository,
             IServiceRepository serviceRepository,
             IUserRepository userRepository,
+            IChatRoomRepository chatRoomRepository,
             ApplicationDbContext context)
         {
+            ChatRoomRepository = chatRoomRepository;
             CategoryRepository = categoryRepository;
             ContractRepository = contractRepository;
             MessageRepository = messageRepository;
@@ -42,45 +42,7 @@ namespace Waddabha.DAL
             _context = context;
         }
        
-        public ICategoryRepository CategoryRepository
-        {
-            get
-            {
-                return _categoryRepository ??= new CategoryRepository(_context);
-            }
-        }
-
-        public IContractRepository ContractRepository
-        {
-            get
-            {
-                return _contractRepository ??= new ContractRepository(_context);
-            }
-        }
-
-        public IMessageRepository MessageRepository
-        {
-            get
-            {
-                return _messageRepository ??= new MessageRepository(_context);
-            }
-        }
-
-        public INotificationRepository NotificationRepository
-        {
-            get
-            {
-                return _notificationRepository ??= new NotificationRepository(_context);
-            }
-        }
-
-        public IServiceRepository ServiceRepository
-        {
-            get
-            {
-                return _serviceRepository ??= new ServiceRepository(_context);
-            }
-        }
+      
 
         public void SaveChanges()
         {

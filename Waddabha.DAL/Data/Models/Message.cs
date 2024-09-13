@@ -19,7 +19,8 @@ namespace Waddabha.DAL.Data.Models
 
         // Navigation property for Receiver
         public virtual User Receiver { get; set; }
+        public virtual ChatRoom ChatRoom { get; set; }
+        public int ChatRoomId { get; set; }
 
-      
     }
 }
