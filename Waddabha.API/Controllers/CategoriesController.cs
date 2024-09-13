@@ -17,7 +17,6 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
         public IActionResult GetAll()
         {
             //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -30,29 +29,6 @@ namespace Waddabha.API.Controllers
         public IActionResult GetById(int id)
         {
             var category = _categoryManager.GetById(id);
-            var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
-            return Ok(response);
-        }
-
-        [HttpPost]
-        public IActionResult Add(CategoryAddDTO categoryAddDTO)
-        {
-            var category = _categoryManager.Add(categoryAddDTO);
-            var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
-            return Ok(response);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _categoryManager.Delete(id);
-            return NoContent();
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, CategoryUpdateDTO categoryUpdateDTO)
-        {
-            var category = _categoryManager.Update(id, categoryUpdateDTO);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }

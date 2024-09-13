@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-using Waddabha.DAL.Data.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Waddabha.BL.DTOs.Auth
 {
@@ -13,7 +11,7 @@ namespace Waddabha.BL.DTOs.Auth
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
-        public IFormFile Image { get; set; }
+        //public IFormFile Image { get; set; }
 
 
     }
