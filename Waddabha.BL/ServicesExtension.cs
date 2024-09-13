@@ -6,6 +6,7 @@ using System.Text;
 using Waddabha.BL.Managers.Auth;
 using Waddabha.BL.Managers.Categories;
 using Waddabha.BL.Managers.Contracts;
+using Waddabha.BL.Managers.Messages;
 using Waddabha.BL.Managers.Services;
 using Waddabha.BL.MappingProfiles;
 
@@ -17,11 +18,13 @@ namespace Waddabha.BL
         {
             services.AddAutoMapper(typeof(CategoryMappings));
             services.AddAutoMapper(typeof(UserMappings));
+            services.AddAutoMapper(typeof(MessageMapping));
 
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped<IContractManager,ContractManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
+            services.AddScoped<IMessageManger, MessageManager>();
 
             var jwtSettings = configuration.GetSection("JwtSettings");
             var key = Encoding.ASCII.GetBytes(jwtSettings.GetSection("Secret").Value!);
@@ -44,7 +47,7 @@ namespace Waddabha.BL
                         ClockSkew = TimeSpan.Zero
                     };
                 });
-            services.AddAuthorization();
+            services.AddSignalR();
         }
     }
 }

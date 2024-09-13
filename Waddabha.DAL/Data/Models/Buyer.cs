@@ -3,5 +3,6 @@
     public class Buyer : User
     {
         public virtual ICollection<Contract>? Contracts { get; set; }
+        
     }
 }

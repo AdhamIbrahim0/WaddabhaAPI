@@ -11,6 +11,8 @@ namespace Waddabha.DAL
         public ICategoryRepository CategoryRepository { get; }
         public IContractRepository ContractRepository { get; }
         public IMessageRepository MessageRepository { get; }
+        Task<int> SaveChangesAsync();
+
         public INotificationRepository NotificationRepository { get; }
         public IServiceRepository ServiceRepository { get; }
 
