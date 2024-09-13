@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Waddabha.BL.DTOs.Auth;
+using Waddabha.BL.Managers.UploadImage;
 using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.BL.Managers.Auth
@@ -16,18 +17,24 @@ namespace Waddabha.BL.Managers.Auth
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
-
-        public AuthManager(UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration)
+        private readonly IUploadImage _uploadImage;
+        public AuthManager(IUploadImage uploadImage, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _configuration = configuration;
+            _uploadImage = uploadImage;
+
         }
         public async Task<string> Register(UserRegisterDTO userDTO)
         {
             User user = _mapper.Map<UserRegisterDTO, User>(userDTO);
+            var uploadResult = await _uploadImage.UploadImageOnCloudinary(userDTO.Image);
+            user.Image = uploadResult;
+
             var result = await _userManager.CreateAsync(user, userDTO.Password);
+            
             if (result.Succeeded && userDTO.Role != "Admin") // Enum
             {
                 await _userManager.AddToRoleAsync(user, userDTO.Role);

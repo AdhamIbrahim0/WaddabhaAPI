@@ -1,4 +1,5 @@
 using Waddabha.API.Hubs;
+using Waddabha.API.Middlewares;
 using Waddabha.BL;
 using Waddabha.BL.Managers.Messages;
 using Waddabha.DAL;
@@ -33,18 +34,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseCors("AllowFrontend");
-
 //app.UseCors();
-
 app.UseHttpsRedirection();
 app.UseRouting(); // Ensure routing is added before configuring endpoints
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 
 // Map controllers and the SignalR ChatHub
 app.UseEndpoints(endpoints =>

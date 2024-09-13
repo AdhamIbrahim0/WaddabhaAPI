@@ -5,6 +5,7 @@ using Waddabha.DAL.Repositories.Contracts;
 using Waddabha.DAL.Repositories.Messages;
 using Waddabha.DAL.Repositories.Notifications;
 using Waddabha.DAL.Repositories.Services;
+using Waddabha.DAL.Repositories.Users;
 
 namespace Waddabha.DAL
 {
@@ -12,25 +13,35 @@ namespace Waddabha.DAL
     {
         private readonly ApplicationDbContext _context;
 
-        private ICategoryRepository _categoryRepository;
-        private IContractRepository _contractRepository;
-        private IMessageRepository _messageRepository;
-        private INotificationRepository _notificationRepository;
-        private IServiceRepository _serviceRepository;
 
-
-
-
-        public async Task<int> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync();  // Return an int to indicate number of affected rows
-        }
-
+      
         public UnitOfWork(ApplicationDbContext context)
         {
+        public ICategoryRepository CategoryRepository { get; }
+        public IContractRepository ContractRepository { get; }
+        public IMessageRepository MessageRepository { get; }
+        public INotificationRepository NotificationRepository { get; }
+        public IServiceRepository ServiceRepository { get; }
+        public IUserRepository UserRepository { get; }
+
+        public UnitOfWork(ICategoryRepository categoryRepository,
+            IContractRepository contractRepository,
+            IMessageRepository messageRepository,
+            INotificationRepository notificationRepository,
+            IServiceRepository serviceRepository,
+            IUserRepository userRepository,
+            ApplicationDbContext context)
+        {
+            CategoryRepository = categoryRepository;
+            ContractRepository = contractRepository;
+            MessageRepository = messageRepository;
+            NotificationRepository = notificationRepository;
+            ServiceRepository = serviceRepository;
+            UserRepository = userRepository;
+
             _context = context;
         }
-
+       
         public ICategoryRepository CategoryRepository
         {
             get
@@ -75,8 +86,10 @@ namespace Waddabha.DAL
         {
             _context.SaveChanges();
         }
-
-      
+           public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();  // Return an int to indicate number of affected rows
+        }
       
         public void Dispose()
         {

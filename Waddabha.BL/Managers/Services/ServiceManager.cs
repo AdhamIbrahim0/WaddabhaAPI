@@ -22,9 +22,9 @@ namespace Waddabha.BL.Managers.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ServiceReadDTO> GetAll()
+        public IEnumerable<ServiceReadDTO> GetAllServicesByCategory(int id)
         {
-            var contracts = _unitOfWork.ServiceRepository.GetAll();
+            var contracts = _unitOfWork.ServiceRepository.GetAllServicesByCategory(id);
             var result = _mapper.Map<IEnumerable<Service>, IEnumerable<ServiceReadDTO>>(contracts);
             return result;
         }
@@ -50,7 +50,38 @@ namespace Waddabha.BL.Managers.Services
             _unitOfWork.SaveChanges();
 
         }
+        public ServiceReadDTO Add(ServiceAddDTO serviceAddDTO)
+        {
+            var service = _mapper.Map<ServiceAddDTO, Service>(serviceAddDTO);
+            var result = _unitOfWork.ServiceRepository.Add(service);
+            _unitOfWork.SaveChanges();
+            var serviceRead = _mapper.Map<Service, ServiceReadDTO>(result);
 
-        
+            return serviceRead;
+        }
+        public ServiceReadDTO Update(int id, ServiceUpdateDTO serviceUpdateDTO)
+        {
+            var existingService = _unitOfWork.ServiceRepository.GetById(id);
+
+            if (existingService == null)
+            {
+                return null;
+            }
+            if (existingService.Id == id)
+            {
+                _mapper.Map(serviceUpdateDTO, existingService);
+                var result = _unitOfWork.ServiceRepository.Update(existingService);
+
+                _unitOfWork.SaveChanges();
+                var serviceRead = _mapper.Map<Service, ServiceReadDTO>(result);
+
+                return serviceRead;
+            }
+            return null;
+
+        }
+
+
+
     }
 }
