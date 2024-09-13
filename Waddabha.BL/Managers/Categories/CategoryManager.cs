@@ -13,7 +13,7 @@ namespace Waddabha.BL.Managers.Categories
         private readonly IMapper _mapper;
         private readonly IUploadImage _uploadImage;
 
-        public CategoryManager(IUploadImage uploadImage,IUnitOfWork unitOfWork, IMapper mapper)
+        public CategoryManager(IUploadImage uploadImage, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -25,8 +25,8 @@ namespace Waddabha.BL.Managers.Categories
             var category = _mapper.Map<CategoryAddDTO, Category>(categoryAddDTO);
             var uploadedImage = await _uploadImage.UploadImageOnCloudinary(categoryAddDTO.Image);
             category.Image = uploadedImage;
-            var result = await  _unitOfWork.CategoryRepository.AddAsync(category);
-             await _unitOfWork.SaveChangesAsync();
+            var result = await _unitOfWork.CategoryRepository.AddAsync(category);
+            await _unitOfWork.SaveChangesAsync();
             var categoryRead = _mapper.Map<Category, CategoryReadDTO>(result);
             return categoryRead;
         }
@@ -42,14 +42,14 @@ namespace Waddabha.BL.Managers.Categories
 
         public async Task<IEnumerable<CategoryReadDTO>> GetAll()
         {
-            var categories =await _unitOfWork.CategoryRepository.GetAllAsync();
+            var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
             var result = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryReadDTO>>(categories);
             return result;
         }
 
         public async Task<CategoryReadDTO> GetById(string id)
         {
-            var category =await _unitOfWork.CategoryRepository.GetByIdAsync(id);
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(id);
             if (category is null) throw new RecordNotFoundException("Category not found");
             var result = _mapper.Map<Category, CategoryReadDTO>(category);
             return result;
