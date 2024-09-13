@@ -35,7 +35,7 @@ namespace Waddabha.API.Controllers
             return Ok(response);
         }
         [HttpPost]
-        public async Task<IActionResult> Add(ContractAddDTO contractAddDTO)
+        public async Task<IActionResult> Add([FromBody] ContractAddDTO contractAddDTO)
         {
             var contract = await _contractManager.Add(contractAddDTO);
             var response = ApiResponse<ContractAddDTO>.SuccessResponse(contract);
