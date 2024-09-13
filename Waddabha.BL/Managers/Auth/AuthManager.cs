@@ -30,11 +30,12 @@ namespace Waddabha.BL.Managers.Auth
         public async Task<string> Register(UserRegisterDTO userDTO)
         {
             User user = _mapper.Map<UserRegisterDTO, User>(userDTO);
-            var uploadResult = await _uploadImage.UploadImageOnCloudinary(userDTO.Image);
-            user.Image = uploadResult;
+            //var uploadResult = await _uploadImage.UploadImageOnCloudinary(userDTO.Image);
+            //user.Image = uploadResult;
+            user.Image = new Image() { ImageUrl = "test.jpg", PublicId = "123" }; // Temporary
 
             var result = await _userManager.CreateAsync(user, userDTO.Password);
-            
+
             if (result.Succeeded && userDTO.Role != "Admin") // Enum
             {
                 await _userManager.AddToRoleAsync(user, userDTO.Role);
@@ -51,6 +52,24 @@ namespace Waddabha.BL.Managers.Auth
             User? user = await _userManager.FindByEmailAsync(userDTO.Email);
             if (user != null)
             {
+                var result = await _signInManager.PasswordSignInAsync(user, userDTO.Password, false, false);
+                if (result.Succeeded)
+                {
+                    Console.WriteLine("Welcome");
+                    return await GenerateJWT(user);
+                }
+            }
+            throw new Exception("Invalid email or password");
+        }
+
+        public async Task<string> AdminLogin(UserLoginDTO userDTO)
+        {
+            User? user = await _userManager.FindByEmailAsync(userDTO.Email);
+            if (user != null)
+            {
+                bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                if (!isAdmin) throw new Exception("Access denied");
+
                 var result = await _signInManager.PasswordSignInAsync(user, userDTO.Password, false, false);
                 if (result.Succeeded)
                 {
