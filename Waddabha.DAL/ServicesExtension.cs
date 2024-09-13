@@ -17,6 +17,8 @@ namespace Waddabha.DAL
     {
         public static void AddDALServices(this IServiceCollection services, IConfiguration configuration)
         {
+           
+           
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("Default")));
 
@@ -28,6 +30,7 @@ namespace Waddabha.DAL
             services.Configure<IdentityOptions>(options =>
             {
                 options.User.RequireUniqueEmail = true;
+
             });
 
             //Repositories
