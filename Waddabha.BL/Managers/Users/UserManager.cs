@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 using Waddabha.BL.DTOs.Users;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
-using Waddabha.DAL.Repositories.Users;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Waddabha.BL.Managers.Users
 {
@@ -41,8 +36,7 @@ namespace Waddabha.BL.Managers.Users
             var user = await _unitOfWork.UserRepository.GetUserProfileAsync(userId);
             var result = _mapper.Map<User, GetUserDTO>(user);
             return result;
-            }
+        }
 
-   
     }
 }

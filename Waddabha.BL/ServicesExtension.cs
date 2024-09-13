@@ -24,7 +24,7 @@ namespace Waddabha.BL
 
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();
-            services.AddScoped<IContractManager,ContractManager>();
+            services.AddScoped<IContractManager, ContractManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IUploadImage, UploadImage>();

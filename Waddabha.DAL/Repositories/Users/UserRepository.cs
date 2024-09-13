@@ -24,5 +24,11 @@ namespace Waddabha.DAL.Repositories.Users
 
 
         }
+    
+        public async Task<User> FindByEmail(string email)
+        {
+        return   await  _context.Users.FirstOrDefaultAsync(c => c.Email == email);
+
+        }
     }
 }

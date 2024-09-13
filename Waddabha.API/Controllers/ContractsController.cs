@@ -2,9 +2,6 @@
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.Managers.Contracts;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Waddabha.BL.DTOs.Categories;
 
 namespace Waddabha.API.Controllers
 {

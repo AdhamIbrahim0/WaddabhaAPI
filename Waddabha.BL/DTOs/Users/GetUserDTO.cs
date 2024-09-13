@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Waddabha.DAL.Data.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Waddabha.BL.DTOs.Users
 {
@@ -27,4 +21,4 @@ namespace Waddabha.BL.DTOs.Users
         public string PublicId { get; set; }
     }
 
-    }
+}
