@@ -44,9 +44,22 @@ namespace Waddabha.DAL
        
       
 
-        public void SaveChanges()
+
+        public async Task SaveChangesAsync()
         {
-            _context.SaveChanges();
+            try
+            {
+                await _context.SaveChangesAsync(); // Use the async version
+            }
+            catch (Exception ex)
+            {
+                var innerException = ex.InnerException?.Message;
+                Console.WriteLine("Error: " + ex.Message + " Inner Exception: " + innerException);
+
+                
+                Console.WriteLine("StackTrace: " + ex.StackTrace);                
+            }
+
         }
            public async Task<int> SaveChangesAsync()
         {

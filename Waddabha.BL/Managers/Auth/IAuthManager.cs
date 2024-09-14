@@ -9,5 +9,7 @@ namespace Waddabha.BL.Managers.Auth
         Task<string> Login(UserLoginDTO userDTO);
         Task<string> AdminLogin(UserLoginDTO userDTO);
         Task<string> GenerateJWT(User user);
+        Task FindByEmailAsync(string name);
+        Task<bool> VerifyOtpAsync(ResetPassDTO ResetPassDTO);
     }
 }

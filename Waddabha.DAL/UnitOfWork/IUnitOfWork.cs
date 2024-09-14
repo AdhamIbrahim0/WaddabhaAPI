@@ -20,7 +20,6 @@ namespace Waddabha.DAL
 
         public INotificationRepository NotificationRepository { get; }
         public IServiceRepository ServiceRepository { get; }
-
-        void SaveChanges();
+        Task SaveChangesAsync();
     }
 }

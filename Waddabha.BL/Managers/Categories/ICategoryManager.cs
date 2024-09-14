@@ -4,10 +4,10 @@ namespace Waddabha.BL.Managers.Categories
 {
     public interface ICategoryManager
     {
-        IEnumerable<CategoryReadDTO> GetAll();
-        CategoryReadDTO GetById(int id);
-        CategoryReadDTO Update(int id, CategoryUpdateDTO categoryUpdateDTO);
-        CategoryReadDTO Add(CategoryAddDTO categoryAddDTO);
-        void Delete(int id);
+        Task<IEnumerable<CategoryReadDTO>> GetAll();
+        Task<CategoryReadDTO> GetById(string id);
+        Task<CategoryReadDTO> Update(string id, CategoryUpdateDTO categoryUpdateDTO);
+        Task<CategoryReadDTO> Add(CategoryAddDTO categoryAddDTO);
+        Task Delete(string id);
     }
 }

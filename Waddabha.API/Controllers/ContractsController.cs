@@ -17,19 +17,34 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var contracts = _contractManager.GetAll();
+            var contracts = await _contractManager.GetAll();
             var response = ApiResponse<IEnumerable<ContractReadDTO>>.SuccessResponse(contracts);
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var contract = _contractManager.GetById(id);
+            var contract = await _contractManager.GetById(id);
             var response = ApiResponse<ContractReadDTO>.SuccessResponse(contract);
             return Ok(response);
         }
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] ContractAddDTO contractAddDTO)
+        {
+            var contract = await _contractManager.Add(contractAddDTO);
+            var response = ApiResponse<ContractAddDTO>.SuccessResponse(contract);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _contractManager.Delete(id);
+            return NoContent();
+        }
+
     }
 }

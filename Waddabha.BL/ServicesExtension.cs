@@ -21,11 +21,13 @@ namespace Waddabha.BL
         {
             services.AddAutoMapper(typeof(CategoryMappings));
             services.AddAutoMapper(typeof(UserMappings));
+            services.AddAutoMapper(typeof(ServiceMappings));
+            services.AddAutoMapper(typeof(ContractMappings));
             services.AddAutoMapper(typeof(MessageMapping));
 
             services.AddScoped<IAuthManager, AuthManager>();
             services.AddScoped<ICategoryManager, CategoryManager>();
-            services.AddScoped<IContractManager,ContractManager>();
+            services.AddScoped<IContractManager, ContractManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<IMessageManger, MessageManager>();
             services.AddScoped<IUserManager, UserManager>();

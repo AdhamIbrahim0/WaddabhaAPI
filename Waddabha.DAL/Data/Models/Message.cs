@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Waddabha.DAL.Data.Models
+﻿namespace Waddabha.DAL.Data.Models
 {
     public class Message : BaseEntity
     {
         public string Body { get; set; }
-
         // Foreign Key to the Sender (User)
         [ForeignKey("Sender")]
         public string SenderId { get; set; }
@@ -21,6 +18,5 @@ namespace Waddabha.DAL.Data.Models
         public virtual User Receiver { get; set; }
         public virtual ChatRoom ChatRoom { get; set; }
         public int ChatRoomId { get; set; }
-
     }
 }

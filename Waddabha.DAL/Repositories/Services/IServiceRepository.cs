@@ -5,6 +5,6 @@ namespace Waddabha.DAL.Repositories.Services
 {
     public interface IServiceRepository : IGenericRepository<Service>
     {
-        IEnumerable<Service> GetAllServicesByCategory(int id);
+        Task<IEnumerable<Service>> GetAllServicesByCategory(string id);
     }
 }

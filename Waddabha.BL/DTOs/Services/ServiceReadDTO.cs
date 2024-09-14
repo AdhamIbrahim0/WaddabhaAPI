@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Waddabha.DAL.Data.Models;
+﻿using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.BL.DTOs.Services
 {
@@ -15,8 +10,8 @@ namespace Waddabha.BL.DTOs.Services
         public string BuyerInstructions { get; set; }
         public string ImagePath { get; set; }
         public int BuyersCount { get; set; }
-        public string Status { get; set; } = "Pending"; // Enum
+        public string Status { get; set; } = "pending"; // Enum
         public double? Rating { get; set; }
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
     }
 }

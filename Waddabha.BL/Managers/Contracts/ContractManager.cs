@@ -1,11 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Waddabha.BL.DTOs.Contracts;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
@@ -22,35 +15,43 @@ namespace Waddabha.BL.Managers.Contracts
             _mapper = mapper;
         }
 
-       
-
-        public IEnumerable<ContractReadDTO> GetAll()
+        public async Task<IEnumerable<ContractReadDTO>> GetAll()
         {
-            var contracts = _unitOfWork.ContractRepository.GetAll();
-            var result = _mapper.Map<IEnumerable<Contract>,IEnumerable<ContractReadDTO>>(contracts);
+            var contracts = await _unitOfWork.ContractRepository.GetAllAsync();
+            var result = _mapper.Map<IEnumerable<Contract>, IEnumerable<ContractReadDTO>>(contracts);
             return result;
         }
 
-        public ContractReadDTO GetById(int id)
+        public async Task<ContractReadDTO> GetById(string id)
         {
-            var contract = _unitOfWork.ContractRepository.GetById(id);
+            var contract = await _unitOfWork.ContractRepository.GetByIdAsync(id);
             if (contract == null)
             {
                 throw new Exception("the contract not found!");//handle the error
             }
             var result = _mapper.Map<Contract, ContractReadDTO>(contract);
 
-            return result; 
+            return result;
         }
-        public void Delete(int id)
+        public async Task Delete(string id)
         {
-            var contract = _unitOfWork.ContractRepository.GetById(id);
+            var contract = await _unitOfWork.ContractRepository.GetByIdAsync(id);
             if (contract == null)
             {
                 throw new Exception("Contract Not Found !");
             }
-            _unitOfWork.ContractRepository.Delete(contract);
-            _unitOfWork.SaveChanges();
+            await _unitOfWork.ContractRepository.DeleteAsync(contract);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<ContractAddDTO> Add(ContractAddDTO contractAddDTO)
+        {
+            var contract = _mapper.Map<ContractAddDTO, Contract>(contractAddDTO);
+
+            var result = await _unitOfWork.ContractRepository.AddAsync(contract);
+            await _unitOfWork.SaveChangesAsync();
+            var contractadd = _mapper.Map<Contract, ContractAddDTO>(result);
+            return contractadd;
         }
 
 

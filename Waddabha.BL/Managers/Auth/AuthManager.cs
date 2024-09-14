@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using MailKit.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MimeKit;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Waddabha.BL.DTOs.Auth;
 using Waddabha.BL.Managers.UploadImage;
+using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.BL.Managers.Auth
@@ -18,13 +21,15 @@ namespace Waddabha.BL.Managers.Auth
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IUploadImage _uploadImage;
-        public AuthManager(IUploadImage uploadImage, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration)
+        private readonly IUnitOfWork _unitOfWork;
+        public AuthManager(IUnitOfWork unitOfWork, IUploadImage uploadImage, UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _configuration = configuration;
             _uploadImage = uploadImage;
+            _unitOfWork = unitOfWork;
 
         }
         public async Task<string> Register(UserRegisterDTO userDTO)
@@ -105,5 +110,80 @@ namespace Waddabha.BL.Managers.Auth
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        public async Task FindByEmailAsync(string email)
+        {
+            try
+            {
+                var user = await _unitOfWork.UserRepository.FindByEmail(email);
+
+                if (user == null)
+                {
+                    throw new Exception("User not found.");
+                }
+
+                var otp = new Random().Next(100000, 999999);
+
+                user.OTPCode  = otp;
+                await _unitOfWork.UserRepository.UpdateAsync(user);
+                await _unitOfWork.SaveChangesAsync();
+                var message = new MimeMessage
+                {
+                    From = { new MailboxAddress("Waddabha", "waddabha072@gmail.com") },
+                    To = { new MailboxAddress(user.Fname, email) },
+                    Subject = "Your OTP Code",
+                    Body = new TextPart("plain") { Text = $"Your OTP Code is: {otp}" }
+                };
+
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+
+                    await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync("waddabha072@gmail.com", "ftad yssu owic xdvl");
+
+                    await client.SendAsync(message);
+                    await client.DisconnectAsync(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<bool> VerifyOtpAsync(ResetPassDTO ResetPassDTO)
+        {
+            var user = await _unitOfWork.UserRepository.FindByEmail(ResetPassDTO.Email);
+
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            if (user.OTPCode != ResetPassDTO.Code)
+            {
+                throw new Exception("Invalid OTP code.");
+            }
+            if (user.OTPCode == ResetPassDTO.Code)
+            {
+
+                var passwordHasher = new PasswordHasher<User>();
+                user.PasswordHash = passwordHasher.HashPassword(user, ResetPassDTO.Password);
+
+                user.OTPCode = null;
+
+                await _unitOfWork.UserRepository.UpdateAsync(user);
+
+                await _unitOfWork.SaveChangesAsync();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }

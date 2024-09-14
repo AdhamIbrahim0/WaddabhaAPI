@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Waddabha.BL.DTOs.Services
 {
@@ -12,7 +8,8 @@ namespace Waddabha.BL.DTOs.Services
         public decimal InitialPrice { get; set; }
         public string Description { get; set; }
         public string BuyerInstructions { get; set; }
-        public List<string> Images { get; set; }
-        public int CategoryId { get; set; }
+        public List<IFormFile> Images { get; set; }
+        public string CategoryId { get; set; }
+        public string SellerId { get; set; }
     }
 }
