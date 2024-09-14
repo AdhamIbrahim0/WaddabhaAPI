@@ -1,4 +1,6 @@
 ﻿using Waddabha.DAL.Data.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Waddabha.DAL.Data.Models
 {
@@ -12,11 +14,13 @@ namespace Waddabha.DAL.Data.Models
         public double? Rating { get; set; }
         public string? FeedbackComment { get; set; }
         public Status Status { get; set; } = Status.Pending;
-        public string ServiceId { get; set; }//
-        public Service Service { get; set; }
-        public string BuyerId { get; set; }//
-        public Buyer Buyer { get; set; }
-        public string SellerId { get; set; }//
-        public Seller Seller { get; set; }
+        public virtual Service Service { get; set; }
+        public string ServiceId { get; set; }
+        public virtual Buyer Buyer { get; set; }
+        public string BuyerId { get; set; }
+        public virtual Seller Seller { get; set; }
+        public string SellerId { get; set; }
+        public virtual ChatRoom ChatRoom { get; set; }
+        public string ChatRoomId { get; set; }
     }
 }
