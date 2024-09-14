@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
               .AllowCredentials(); // Required for SignalR
     });
 });
-builder.Services.AddScoped<MessageManager>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

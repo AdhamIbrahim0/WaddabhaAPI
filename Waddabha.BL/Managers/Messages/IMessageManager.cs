@@ -13,8 +13,10 @@ namespace Waddabha.BL.Managers.Messages
     {
            Task<MessageReadDTO> SendMessageAsync(MessageAddDTO messageAddDTO);
             Task<IEnumerable<MessageReadDTO>> GetMessagesAsync(string senderId, string receiverId);
-           
-        }
+        Task<IEnumerable<MessageReadDTO>> GetMessagesByChatRoomIdAsync( int chatRoomId);
+
 
     }
+
+}
 

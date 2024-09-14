@@ -26,8 +26,17 @@ namespace Waddabha.DAL.Repositories.Messages
             return await _context.Set<Message>()
                 .Where(m => (m.SenderId == senderId && m.ReceiverId == receiverId) ||
                             (m.SenderId == receiverId && m.ReceiverId == senderId))
-                .OrderBy(m => m.CreatedAt) // Assuming you have a Timestamp or similar property
+                .OrderBy(m => m.CreatedAt) 
                 .ToListAsync();
+
+        }
+        public async Task<IEnumerable<Message>> GetMessagesByChatRoomId(int chatRoomId)
+        {
+            return await _context.Set<Message>()
+                .Where(m =>m.ChatRoomId == chatRoomId)  
+                .OrderBy(m => m.CreatedAt)
+                .ToListAsync();
+
         }
 
     }

@@ -29,6 +29,37 @@ namespace Waddabha.DAL.Data.Context
                 .WithMany(seller => seller.Contracts)
                 .HasForeignKey(c => c.SellerId)
                 .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete for Seller
+                                                    // Prevent cascading delete for Buyer
+            modelBuilder.Entity<ChatRoom>()
+         .HasOne(cr => cr.Seller)
+         .WithMany(s => s.ChatRooms)
+         .HasForeignKey(cr => cr.SellerId)
+         .OnDelete(DeleteBehavior.NoAction); // No cascading delete for Seller
+
+            // Prevent cascade delete for ChatRoom and Buyer
+            modelBuilder.Entity<ChatRoom>()
+                .HasOne(cr => cr.Buyer)
+                .WithMany(b => b.ChatRooms)
+                .HasForeignKey(cr => cr.BuyerId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Contract>()
+                .HasOne(c => c.ChatRoom)
+                .WithOne(cr => cr.Contract)
+                .HasForeignKey<Contract>(c => c.ChatRoomId)
+                .OnDelete(DeleteBehavior.Restrict); // Ensure no cascade delete for Contract-ChatRoom
+
+            // Contract relationship configuration
+            //modelBuilder.Entity<ChatRoom>()
+            //.HasOne(cr => cr.Contract)
+            //.WithOne(c => c.ChatRoom)
+            //.HasForeignKey<Contract>(c => c.ChatRoomId)
+            //.OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<Contract>()
+            //.HasOne(c => c.ChatRoom)
+            //.WithOne(c => c.Contract)
+            //.HasForeignKey<Contract>(c=>c.ChatRoomId)
+            // .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Message>()
         .HasOne(m => m.Sender)
@@ -42,6 +73,12 @@ namespace Waddabha.DAL.Data.Context
                 .WithMany()
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Category>()
+                .HasOne(c => c.Image)
+                .WithMany() // Assuming Image does not have a collection of Categories
+                .HasForeignKey(c => c.ImageId)  // Ensure this foreign key is defined
+                .OnDelete(DeleteBehavior.NoAction);// Prevent cascade delete to avoid multiple paths
+
 
             modelBuilder.Entity<IdentityRole>().HasData(
             new IdentityRole() { Id = "d9be4831-a95f-4457-a1e5-12b5c26a3cd9", Name = "Admin", NormalizedName = "ADMIN" },
