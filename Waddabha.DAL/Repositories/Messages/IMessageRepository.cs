@@ -12,6 +12,8 @@ using Waddabha.DAL.Repositories.Messages;
         {
             Task<Message> AddAsync(Message entity); // Define the method directly here
             Task<IEnumerable<Message>> GetMessages(string senderId, string receiverId);
+             Task<IEnumerable<Message>> GetMessagesByChatRoomId(int chatRoomId);
+
     }
     }
 

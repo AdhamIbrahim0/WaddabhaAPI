@@ -12,6 +12,7 @@ using Waddabha.BL.Managers.Messages;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 
+
 namespace Waddabha.BL.Managers.Messages
 {
     public class MessageManager : IMessageManger
@@ -51,6 +52,14 @@ namespace Waddabha.BL.Managers.Messages
 
             return messageReadDTOs;
         }
+       public async Task<IEnumerable<MessageReadDTO>> GetMessagesByChatRoomIdAsync(int chatRoomId)
+        {
 
+            var messages =await _unitOfWork.MessageRepository.GetMessagesByChatRoomId(chatRoomId);
+
+            var messageReadDTOs = _mapper.Map<IEnumerable<MessageReadDTO>>(messages);
+            return messageReadDTOs;
+
+        }
     }
 }

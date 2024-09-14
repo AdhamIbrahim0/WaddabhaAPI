@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Waddabha.BL.Managers.Auth;
 using Waddabha.BL.Managers.Categories;
+using Waddabha.BL.Managers.ChatRooms;
 using Waddabha.BL.Managers.Contracts;
 using Waddabha.BL.Managers.Messages;
 using Waddabha.BL.Managers.Services;
@@ -29,6 +30,7 @@ namespace Waddabha.BL
             services.AddScoped<IMessageManger, MessageManager>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IUploadImage, UploadImage>();
+            services.AddScoped<IChatRoomManager, ChatRoomManager>();
 
 
 

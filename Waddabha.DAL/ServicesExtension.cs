@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Waddabha.DAL.Data.Context;
 using Waddabha.DAL.Data.Models;
 using Waddabha.DAL.Repositories.Categories;
+using Waddabha.DAL.Repositories.ChatRooms;
 using Waddabha.DAL.Repositories.Contracts;
 using Waddabha.DAL.Repositories.Messages;
 using Waddabha.DAL.Repositories.Notifications;
@@ -40,6 +41,7 @@ namespace Waddabha.DAL
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,12 @@ namespace Waddabha.DAL.Repositories.ChatRooms
           
         }
 
-
+        public async Task<IEnumerable<ChatRoom>> GetChatRoomsByUserId(string userId)
+        {
+            return await _context.Set<ChatRoom>()
+               .Where(m => m.BuyerId == userId || m.SellerId == userId)
+               .OrderBy(m => m.CreatedAt).ToListAsync();
+               
+        }
     }
 }
