@@ -13,7 +13,7 @@ namespace Waddabha.DAL.Repositories.Services
 
         public async Task<IEnumerable<Service>> GetAllServicesByCategory(string id)
         {
-            var services = await _context.Services.Where(x => x.CategoryId == id).AsNoTracking().ToListAsync();
+            var services = await _context.Services.Include(x => x.Images).Where(x => x.CategoryId == id).AsNoTracking().ToListAsync();
             return services;
         }
     }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Waddabha.BL.DTOs.Services;
+using Waddabha.BL.DTOs.Users;
 using Waddabha.BL.Managers.UploadImage;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
+using Waddabha.DAL.Data.Enums;
 
 namespace Waddabha.BL.Managers.Services
 {
@@ -19,10 +21,29 @@ namespace Waddabha.BL.Managers.Services
         }
         public async Task<IEnumerable<ServiceReadDTO>> GetAllServicesByCategory(string id)
         {
-            var contracts = await _unitOfWork.ServiceRepository.GetAllServicesByCategory(id);
-            var result = _mapper.Map<IEnumerable<Service>, IEnumerable<ServiceReadDTO>>(contracts);
+            var services = await _unitOfWork.ServiceRepository.GetAllServicesByCategory(id);
+            var result = services.Select(s => new ServiceReadDTO
+            {
+                Name = s.Name,
+                InitialPrice = s.InitialPrice,
+                Description = s.Description,
+                BuyerInstructions = s.BuyerInstructions,
+                Images = s.Images.Select(i => new ImageDto
+                {
+                    ImageUrl = i.ImageUrl,
+                    PublicId = i.PublicId
+                }).ToList(),  // Mapping images here
+                Status=s.Status,
+                BuyersCount = s.BuyersCount,
+                Rating = s.Rating,
+                CategoryId = s.CategoryId,
+                Id = s.Id,
+                CreatedAt = s.CreatedAt
+            });
+
             return result;
         }
+
         public async Task<ServiceReadDTO> GetById(string id)
         {
             var service = await _unitOfWork.ServiceRepository.GetByIdAsync(id);
