@@ -35,9 +35,9 @@ namespace Waddabha.BL.Managers.Auth
         public async Task<string> Register(UserRegisterDTO userDTO)
         {
             User user = _mapper.Map<UserRegisterDTO, User>(userDTO);
-            //var uploadResult = await _uploadImage.UploadImageOnCloudinary(userDTO.Image);
-            //user.Image = uploadResult;
-            user.Image = new Image() { ImageUrl = "test.jpg", PublicId = "123" }; // Temporary
+            var uploadResult = await _uploadImage.UploadImageOnCloudinary(userDTO.Image);
+            user.Image = uploadResult;
+            //user.Image = new Image() { ImageUrl = "test.jpg", PublicId = "123" }; // Temporary
 
             var result = await _userManager.CreateAsync(user, userDTO.Password);
 
