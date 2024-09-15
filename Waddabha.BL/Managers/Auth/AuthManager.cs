@@ -34,10 +34,21 @@ namespace Waddabha.BL.Managers.Auth
         }
         public async Task<string> Register(UserRegisterDTO userDTO)
         {
-            User user = _mapper.Map<UserRegisterDTO, User>(userDTO);
-            //var uploadResult = await _uploadImage.UploadImageOnCloudinary(userDTO.Image);
-            //user.Image = uploadResult;
-            user.Image = new Image() { ImageUrl = "test.jpg", PublicId = "123" }; // Temporary
+            User user;
+            if (userDTO.Role == "Buyer")
+            {
+                user = _mapper.Map<UserRegisterDTO, Buyer>(userDTO);
+            }
+            else if (userDTO.Role == "Seller")
+            {
+                user = _mapper.Map<UserRegisterDTO, Seller>(userDTO);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Role");
+            }
+            var uploadResult = await _uploadImage.UploadImageOnCloudinary(userDTO.Image);
+            user.Image = uploadResult;
 
             var result = await _userManager.CreateAsync(user, userDTO.Password);
 
@@ -123,7 +134,7 @@ namespace Waddabha.BL.Managers.Auth
 
                 var otp = new Random().Next(100000, 999999);
 
-                user.OTPCode  = otp;
+                user.OTPCode = otp;
                 await _unitOfWork.UserRepository.UpdateAsync(user);
                 await _unitOfWork.SaveChangesAsync();
                 var message = new MimeMessage

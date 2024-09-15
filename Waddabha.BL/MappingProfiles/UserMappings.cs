@@ -10,12 +10,16 @@ namespace Waddabha.BL.MappingProfiles
         public UserMappings()
         {
 
-            CreateMap<UserRegisterDTO, User>().ForMember(dest => dest.Image, opt => opt.Ignore());
+            CreateMap<UserRegisterDTO, User>().ForMember(dest => dest.Image, opt => opt.Ignore()).ReverseMap();
+            CreateMap<UserRegisterDTO, Buyer>().ForMember(dest => dest.Image, opt => opt.Ignore()).ReverseMap();
+            CreateMap<UserRegisterDTO, Seller>().ForMember(dest => dest.Image, opt => opt.Ignore()).ReverseMap();
+
+            CreateMap<SellerReadDTO, Seller>().ForMember(dest => dest.Image, opt => opt.Ignore()).ReverseMap();
 
             CreateMap<UserLoginDTO, User>().ReverseMap();
             CreateMap<User, GetUserDTO>().ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image));
 
-            CreateMap<Image, ImageDto>().ReverseMap();
+            CreateMap<Image, ImageDto>().ReverseMap().ForMember(dest => dest.Service, opt => opt.Ignore());
 
             CreateMap<EditUserDTO, User>().ReverseMap();
 
