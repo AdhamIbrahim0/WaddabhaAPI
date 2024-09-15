@@ -10,6 +10,5 @@ namespace Waddabha.BL.DTOs.Services
         public string BuyerInstructions { get; set; }
         public List<IFormFile> Images { get; set; }
         public string CategoryId { get; set; }
-        public string SellerId { get; set; }
     }
 }
