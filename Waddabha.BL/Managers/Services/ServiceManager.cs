@@ -6,7 +6,9 @@ using Waddabha.BL.DTOs.Users;
 using Waddabha.BL.Managers.UploadImage;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 using Waddabha.DAL.Data.Models;
+
 
 namespace Waddabha.BL.Managers.Services
 {
@@ -15,11 +17,13 @@ namespace Waddabha.BL.Managers.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IUploadImage _uploadImage;
-        public ServiceManager(IUploadImage uploadImage, IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly UserManager<User> _userManager;
+        public ServiceManager(UserManager<User> userManager,IUploadImage uploadImage, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _uploadImage = uploadImage;
+            _userManager = userManager;
         }
         public async Task<IEnumerable<ServiceReadDTO>> GetAllServicesByCategory(string id)
         {
@@ -68,16 +72,26 @@ namespace Waddabha.BL.Managers.Services
             await _unitOfWork.ServiceRepository.DeleteAsync(service);
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO)
+        public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO,string SellerId)
         {
+            var seller = await _unitOfWork.UserRepository.FindByUserName(SellerId);
+
+            var roles = await _userManager.GetRolesAsync(seller);
+
+            if (!roles.Contains("Seller"))
+            {
+                throw new UnauthorizedAccessException("User is not authorized to add a service.");
+            }
+
             var newService = new Service
             {
                 Name = serviceAddDTO.Name,
                 InitialPrice = serviceAddDTO.InitialPrice,
                 Description = serviceAddDTO.Description,
                 BuyerInstructions = serviceAddDTO.BuyerInstructions,
-                SellerId = serviceAddDTO.SellerId,
-                CategoryId = serviceAddDTO.CategoryId
+/*                SellerId = serviceAddDTO.SellerId,
+*/                CategoryId = serviceAddDTO.CategoryId,
+                SellerId= seller.Id
             };
 
             var uploadedImages = await _uploadImage.UploadImagesOnCloudinary(serviceAddDTO.Images);

@@ -8,7 +8,7 @@ namespace Waddabha.BL.Managers.Services
         Task<IEnumerable<ServiceReadDTO>> GetAllServicesByCategory(string id);
         Task<IEnumerable<ServiceReadDTO>> GetServicesByStatus(Status status);
         Task<ServiceReadDTO> GetById(string id);
-        Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO);
+        Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO, string SellerId);
         Task<ServiceReadDTO> Update(string id, ServiceUpdateDTO serviceUpdateDTO);
         Task<ServiceReadDTO> GetByIdWithSeller(string id);
         Task Delete(string id);

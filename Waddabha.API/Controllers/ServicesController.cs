@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Services;
 using Waddabha.BL.Managers.Services;
@@ -47,7 +48,13 @@ namespace Waddabha.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(ServiceAddDTO serviceAddDTO)
         {
-            var service = await _serviceManager.Add(serviceAddDTO);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();  // Handle missing user ID
+            }
+            var service = await _serviceManager.Add(serviceAddDTO,userId);
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
             return Ok(response);
         }

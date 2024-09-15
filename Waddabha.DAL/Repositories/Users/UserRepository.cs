@@ -30,5 +30,10 @@ namespace Waddabha.DAL.Repositories.Users
         return   await  _context.Users.FirstOrDefaultAsync(c => c.Email == email);
 
         }
+        public async Task<User> FindByUserName(string username)
+        {
+            return await _context.Users.FirstOrDefaultAsync(c => c.UserName == username);
+
+        }
     }
 }

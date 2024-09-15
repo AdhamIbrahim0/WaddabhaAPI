@@ -7,5 +7,6 @@ namespace Waddabha.DAL.Repositories.Users
     {
         public Task<User> GetUserProfileAsync(string id);
         Task<User> FindByEmail(string email);
+        Task<User> FindByUserName(string username);
     }
 }
