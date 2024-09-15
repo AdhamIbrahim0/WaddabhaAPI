@@ -31,28 +31,5 @@ namespace Waddabha.API.Controllers
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Add(CategoryAddDTO categoryAddDTO)
-        {
-            var category = await _categoryManager.Add(categoryAddDTO);
-            var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
-            return Ok(response);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            await _categoryManager.Delete(id);
-            return NoContent();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, CategoryUpdateDTO categoryUpdateDTO)
-        {
-            var category = await _categoryManager.Update(id, categoryUpdateDTO);
-            var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
-            return Ok(response);
-        }
     }
 }

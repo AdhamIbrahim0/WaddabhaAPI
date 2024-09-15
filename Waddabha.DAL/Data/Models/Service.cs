@@ -10,7 +10,7 @@ namespace Waddabha.DAL.Data.Models
         public string BuyerInstructions { get; set; }
         public int BuyersCount { get; set; }
         public double? Rating { get; set; }
-
+        public string RejectionMessage { get; set; } = string.Empty;
         public Status Status { get; set; } = Status.Pending;
         public ICollection<Image> Images { get; set; } = new List<Image>();
         public string CategoryId { get; set; }
