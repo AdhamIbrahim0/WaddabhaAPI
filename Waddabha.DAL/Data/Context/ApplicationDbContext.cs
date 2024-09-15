@@ -68,7 +68,7 @@ namespace Waddabha.DAL.Data.Context
              .WithMany(c => c.Notifications)
              .HasForeignKey(c => c.UserId)
              .OnDelete(DeleteBehavior.Restrict);
- 
+
             modelBuilder.Entity<Service>()
              .HasOne(c => c.Seller)
              .WithMany(c => c.Services)
@@ -152,11 +152,12 @@ namespace Waddabha.DAL.Data.Context
                 .WithMany()
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Category>()
-                .HasOne(c => c.Image)
-                .WithMany() // Assuming Image does not have a collection of Categories
-                .HasForeignKey(c => c.ImageId)  // Ensure this foreign key is defined
-                .OnDelete(DeleteBehavior.NoAction);// Prevent cascade delete to avoid multiple paths
+                .HasOne(c => c.Image)              // One Category has one Image
+                .WithOne(i => i.Category)          // One Image has one Category
+                .HasForeignKey<Image>(i => i.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);// Prevent cascade delete to avoid multiple paths
 
             modelBuilder.Entity<IdentityRole>().HasData(
             new IdentityRole() { Id = "d9be4831-a95f-4457-a1e5-12b5c26a3cd9", Name = "Admin", NormalizedName = "ADMIN" },

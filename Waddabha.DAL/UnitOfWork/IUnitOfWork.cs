@@ -16,7 +16,6 @@ namespace Waddabha.DAL
         public IChatRoomRepository ChatRoomRepository { get; }
 
         public IMessageRepository MessageRepository { get; }
-        Task<int> SaveChangesAsync();
 
         public INotificationRepository NotificationRepository { get; }
         public IServiceRepository ServiceRepository { get; }

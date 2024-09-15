@@ -189,7 +189,7 @@ namespace Waddabha.DAL.Migrations
 
                     b.Property<string>("ImageId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -197,19 +197,13 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId")
-                        .IsUnique();
-
                     b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.ChatRoom", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuyerId")
                         .IsRequired()
@@ -243,8 +237,9 @@ namespace Waddabha.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
+                    b.Property<string>("ChatRoomId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -300,6 +295,9 @@ namespace Waddabha.DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -316,6 +314,10 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId")
+                        .IsUnique()
+                        .HasFilter("[CategoryId] IS NOT NULL");
+
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Image");
@@ -330,8 +332,9 @@ namespace Waddabha.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ChatRoomId")
-                        .HasColumnType("int");
+                    b.Property<string>("ChatRoomId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -606,17 +609,6 @@ namespace Waddabha.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Waddabha.DAL.Data.Models.Category", b =>
-                {
-                    b.HasOne("Waddabha.DAL.Data.Models.Image", "Image")
-                        .WithOne("Category")
-                        .HasForeignKey("Waddabha.DAL.Data.Models.Category", "ImageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-                });
-
             modelBuilder.Entity("Waddabha.DAL.Data.Models.ChatRoom", b =>
                 {
                     b.HasOne("Waddabha.DAL.Data.Models.Buyer", "Buyer")
@@ -673,10 +665,17 @@ namespace Waddabha.DAL.Migrations
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Image", b =>
                 {
+                    b.HasOne("Waddabha.DAL.Data.Models.Category", "Category")
+                        .WithOne("Image")
+                        .HasForeignKey("Waddabha.DAL.Data.Models.Image", "CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Waddabha.DAL.Data.Models.Service", "Service")
                         .WithMany("Images")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Category");
 
                     b.Navigation("Service");
                 });
@@ -686,7 +685,7 @@ namespace Waddabha.DAL.Migrations
                     b.HasOne("Waddabha.DAL.Data.Models.ChatRoom", "ChatRoom")
                         .WithMany("Messages")
                         .HasForeignKey("ChatRoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Waddabha.DAL.Data.Models.User", "Receiver")
@@ -755,19 +754,22 @@ namespace Waddabha.DAL.Migrations
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Category", b =>
                 {
+                    b.Navigation("Image")
+                        .IsRequired();
+
                     b.Navigation("Services");
                 });
 
-            modelBuilder.Entity("Waddabha.DAL.Data.Models.Image", b =>
-                {
-                    b.Navigation("Category");
-
-                    b.Navigation("User");
             modelBuilder.Entity("Waddabha.DAL.Data.Models.ChatRoom", b =>
                 {
                     b.Navigation("Contract");
 
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Waddabha.DAL.Data.Models.Image", b =>
+                {
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Service", b =>

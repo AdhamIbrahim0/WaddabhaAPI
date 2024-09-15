@@ -1,21 +1,12 @@
 ﻿using AutoMapper;
-using Azure;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.DTOs.Messages;
-using Waddabha.BL.Managers.Messages;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 
 
 namespace Waddabha.BL.Managers.Messages
 {
-    public class MessageManager : IMessageManger
+    public class MessageManager : IMessageManager
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -52,10 +43,10 @@ namespace Waddabha.BL.Managers.Messages
 
             return messageReadDTOs;
         }
-       public async Task<IEnumerable<MessageReadDTO>> GetMessagesByChatRoomIdAsync(int chatRoomId)
+        public async Task<IEnumerable<MessageReadDTO>> GetMessagesByChatRoomIdAsync(string chatRoomId)
         {
 
-            var messages =await _unitOfWork.MessageRepository.GetMessagesByChatRoomId(chatRoomId);
+            var messages = await _unitOfWork.MessageRepository.GetMessagesByChatRoomId(chatRoomId);
 
             var messageReadDTOs = _mapper.Map<IEnumerable<MessageReadDTO>>(messages);
             return messageReadDTOs;

@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Waddabha.DAL.Data.Context;
+﻿using Waddabha.DAL.Data.Context;
 using Waddabha.DAL.Repositories.Categories;
 using Waddabha.DAL.Repositories.ChatRooms;
 using Waddabha.DAL.Repositories.Contracts;
@@ -20,7 +19,7 @@ namespace Waddabha.DAL
         public INotificationRepository NotificationRepository { get; }
         public IServiceRepository ServiceRepository { get; }
         public IUserRepository UserRepository { get; }
-        public IChatRoomRepository  ChatRoomRepository { get; }
+        public IChatRoomRepository ChatRoomRepository { get; }
 
         public UnitOfWork(ICategoryRepository categoryRepository,
             IContractRepository contractRepository,
@@ -41,8 +40,8 @@ namespace Waddabha.DAL
 
             _context = context;
         }
-       
-      
+
+
 
 
         public async Task SaveChangesAsync()
@@ -56,16 +55,12 @@ namespace Waddabha.DAL
                 var innerException = ex.InnerException?.Message;
                 Console.WriteLine("Error: " + ex.Message + " Inner Exception: " + innerException);
 
-                
-                Console.WriteLine("StackTrace: " + ex.StackTrace);                
+
+                Console.WriteLine("StackTrace: " + ex.StackTrace);
             }
 
         }
-           public async Task<int> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync();  // Return an int to indicate number of affected rows
-        }
-      
+
         public void Dispose()
         {
             _context.Dispose();
