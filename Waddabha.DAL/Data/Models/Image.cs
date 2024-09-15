@@ -6,7 +6,6 @@
         public string PublicId { get; set; }
         public string? ServiceId { get; set; }
         public Service? Service { get; set; }
-        public string? CategoryId { get; set; }
         public Category? Category { get; set; }
         public User? User { get; set; }
     }

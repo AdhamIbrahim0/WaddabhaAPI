@@ -153,11 +153,11 @@ namespace Waddabha.DAL.Data.Context
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Category>()
-                .HasOne(c => c.Image)              // One Category has one Image
-                .WithOne(i => i.Category)          // One Image has one Category
-                .HasForeignKey<Image>(i => i.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);// Prevent cascade delete to avoid multiple paths
+            //modelBuilder.Entity<Category>()
+            //    .HasOne(c => c.Image)              // One Category has one Image
+            //    .WithOne(i => i.Category)          // One Image has one Category
+            //    .HasForeignKey<Image>(i => i.CategoryId)
+            //    .OnDelete(DeleteBehavior.Restrict);// Prevent cascade delete to avoid multiple paths
 
             modelBuilder.Entity<IdentityRole>().HasData(
             new IdentityRole() { Id = "d9be4831-a95f-4457-a1e5-12b5c26a3cd9", Name = "Admin", NormalizedName = "ADMIN" },
