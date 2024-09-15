@@ -187,7 +187,7 @@ namespace Waddabha.BL.Managers.Auth
                 await _unitOfWork.UserRepository.UpdateAsync(user);
 
                 await _unitOfWork.SaveChangesAsync();
-
+                
                 return true;
             }
             else
