@@ -16,5 +16,8 @@ namespace Waddabha.DAL.Repositories.Services
             var services = await _context.Services.Include(x => x.Images).Where(x => x.CategoryId == id).AsNoTracking().ToListAsync();
             return services;
         }
+
+
+
     }
 }

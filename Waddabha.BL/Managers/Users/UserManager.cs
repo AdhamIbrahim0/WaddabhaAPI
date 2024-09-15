@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Waddabha.BL.DTOs.Categories;
 using Waddabha.BL.DTOs.Users;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
@@ -37,6 +38,28 @@ namespace Waddabha.BL.Managers.Users
             var result = _mapper.Map<User, GetUserDTO>(user);
             return result;
         }
+
+        public async Task<EditUserDTO> EditUserAsync(EditUserDTO editUserDTO, string username)
+        {
+            var existingUser = await _unitOfWork.UserRepository.FindByUserName(username);
+            if (existingUser == null)
+            {
+                throw new KeyNotFoundException($"User with username '{username}' not found.");
+            }
+
+ 
+                _mapper.Map(existingUser,editUserDTO);
+
+                _unitOfWork.UserRepository.UpdateAsync(existingUser);
+
+                await _unitOfWork.SaveChangesAsync();
+
+                var updatedUserDTO = _mapper.Map<EditUserDTO>(existingUser);
+
+                return updatedUserDTO;
+  
+        }
+
 
     }
 }

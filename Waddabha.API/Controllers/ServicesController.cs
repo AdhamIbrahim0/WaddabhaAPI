@@ -52,9 +52,9 @@ namespace Waddabha.API.Controllers
 
             if (string.IsNullOrEmpty(userId))
             {
-                return Unauthorized();  // Handle missing user ID
+                return Unauthorized(); 
             }
-            var service = await _serviceManager.Add(serviceAddDTO,userId);
+            var service = await _serviceManager.Add(serviceAddDTO, userId);
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
             return Ok(response);
         }
@@ -70,5 +70,6 @@ namespace Waddabha.API.Controllers
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
             return Ok(response);
         }
+
     }
 }

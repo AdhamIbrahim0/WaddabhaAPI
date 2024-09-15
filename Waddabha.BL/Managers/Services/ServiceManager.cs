@@ -6,6 +6,7 @@ using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 using Waddabha.DAL.Data.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Waddabha.BL.Managers.Services
 {
@@ -67,9 +68,9 @@ namespace Waddabha.BL.Managers.Services
             await _unitOfWork.ServiceRepository.DeleteAsync(service);
             _unitOfWork.SaveChangesAsync();
         }
-        public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO,string SellerId)
+        public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO,string username)
         {
-            var seller = await _unitOfWork.UserRepository.FindByUserName(SellerId);
+            var seller = await _unitOfWork.UserRepository.FindByUserName(username);
 
             var roles = await _userManager.GetRolesAsync(seller);
 

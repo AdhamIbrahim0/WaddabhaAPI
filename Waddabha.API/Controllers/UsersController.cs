@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Waddabha.API.ResponseModels;
+using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.DTOs.Users;
 using Waddabha.BL.Managers.Users;
 
@@ -33,6 +35,19 @@ namespace Waddabha.API.Controllers
                 return Unauthorized("Invalid or expired token");
             }
         }
+        [HttpPut]
+        public async Task<IActionResult> EditUserData(EditUserDTO editUserDTO)
+        {
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
+            if (string.IsNullOrEmpty(username))
+            {
+                return Unauthorized();
+            }
+            var user = await _userManager.EditUserAsync(editUserDTO,username);
+            var response = ApiResponse<EditUserDTO>.SuccessResponse(user);
+            return Ok(response);
+
+        }
     }
 }
