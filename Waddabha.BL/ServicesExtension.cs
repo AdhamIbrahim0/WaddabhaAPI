@@ -29,7 +29,7 @@ namespace Waddabha.BL
             services.AddScoped<ICategoryManager, CategoryManager>();
             services.AddScoped<IContractManager, ContractManager>();
             services.AddScoped<IServiceManager, ServiceManager>();
-            services.AddScoped<IMessageManger, MessageManager>();
+            services.AddScoped<IMessageManager, MessageManager>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IUploadImage, UploadImage>();
             services.AddScoped<IChatRoomManager, ChatRoomManager>();

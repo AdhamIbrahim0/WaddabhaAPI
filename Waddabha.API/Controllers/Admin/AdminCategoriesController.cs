@@ -17,40 +17,40 @@ namespace Waddabha.API.Controllers.Admin
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var categories = _categoryManager.GetAll();
+            var categories = await _categoryManager.GetAll();
             var response = ApiResponse<IEnumerable<CategoryReadDTO>>.SuccessResponse(categories);
             return Ok(response);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(string id)
         {
-            var category = _categoryManager.GetById(id);
+            var category = await _categoryManager.GetById(id);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }
 
         [HttpPost]
-        public IActionResult Add(CategoryAddDTO categoryAddDTO)
+        public async Task<IActionResult> Add(CategoryAddDTO categoryAddDTO)
         {
-            var category = _categoryManager.Add(categoryAddDTO);
+            var category = await _categoryManager.Add(categoryAddDTO);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            _categoryManager.Delete(id);
+            await _categoryManager.Delete(id);
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, CategoryUpdateDTO categoryUpdateDTO)
+        public async Task<IActionResult> Update(string id, CategoryUpdateDTO categoryUpdateDTO)
         {
-            var category = _categoryManager.Update(id, categoryUpdateDTO);
+            var category = await _categoryManager.Update(id, categoryUpdateDTO);
             var response = ApiResponse<CategoryReadDTO>.SuccessResponse(category);
             return Ok(response);
         }

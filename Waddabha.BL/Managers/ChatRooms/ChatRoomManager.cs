@@ -1,11 +1,5 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Waddabha.BL.DTOs.ChatRooms;
-using Waddabha.BL.DTOs.Services;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 
@@ -23,35 +17,35 @@ namespace Waddabha.BL.Managers.ChatRooms
             _mapper = mapper;
         }
 
-        public ChatRoomReadDTO Add(ChatRoomAddDTO chatRoomAddDTO)
+        public async Task<ChatRoomReadDTO> Add(ChatRoomAddDTO chatRoomAddDTO)
         {
             var chatRoom = _mapper.Map<ChatRoomAddDTO, ChatRoom>(chatRoomAddDTO);
-            var result = _unitOfWork.ChatRoomRepository.Add(chatRoom);
-            _unitOfWork.SaveChanges();
+            var result = await _unitOfWork.ChatRoomRepository.AddAsync(chatRoom);
+            await _unitOfWork.SaveChangesAsync();
             var chatRoomRead = _mapper.Map<ChatRoom, ChatRoomReadDTO>(result);
 
             return chatRoomRead;
         }
 
-        public void Delete(int id)
+        public async void Delete(string id)
         {
-            var chatRoom = _unitOfWork.ChatRoomRepository.GetById(id);
+            var chatRoom = await _unitOfWork.ChatRoomRepository.GetByIdAsync(id);
             if (chatRoom == null)
             {
                 throw new Exception();
             }
-            _unitOfWork.ChatRoomRepository.Delete(chatRoom);
-            _unitOfWork.SaveChanges();
+            await _unitOfWork.ChatRoomRepository.DeleteAsync(chatRoom);
+            await _unitOfWork.SaveChangesAsync();
         }
 
-        public IEnumerable<ChatRoomReadDTO> GetAll()
+        public async Task<IEnumerable<ChatRoomReadDTO>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public ChatRoomReadDTO GetById(int id)
+        public async Task<ChatRoomReadDTO> GetById(string id)
         {
-            var ChatRoom = _unitOfWork.ChatRoomRepository.GetById(id);
+            var ChatRoom = await _unitOfWork.ChatRoomRepository.GetByIdAsync(id);
             if (ChatRoom == null)
             {
                 throw new Exception();//handle the error 
@@ -64,11 +58,11 @@ namespace Waddabha.BL.Managers.ChatRooms
         {
 
             var chatRooms = await _unitOfWork.ChatRoomRepository.GetChatRoomsByUserId(userId);
-          var result =_mapper.Map<IEnumerable<ChatRoom>,IEnumerable<ChatRoomReadDTO>>(chatRooms);
+            var result = _mapper.Map<IEnumerable<ChatRoom>, IEnumerable<ChatRoomReadDTO>>(chatRooms);
             return result;
         }
     }
 
-        
-    }
+
+}
 
