@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Services;
@@ -46,6 +47,7 @@ namespace Waddabha.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Seller")]
         public async Task<IActionResult> Add(ServiceAddDTO serviceAddDTO)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
