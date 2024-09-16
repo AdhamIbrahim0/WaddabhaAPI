@@ -5,8 +5,8 @@ namespace Waddabha.API.Controllers.Admin
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
-    public class AdminController : ControllerBase
+/*    [Authorize(Roles = "Admin")]
+*/    public class AdminController : ControllerBase
     {
     }
 }

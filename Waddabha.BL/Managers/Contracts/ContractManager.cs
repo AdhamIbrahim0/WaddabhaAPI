@@ -44,15 +44,33 @@ namespace Waddabha.BL.Managers.Contracts
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<ContractAddDTO> Add(ContractAddDTO contractAddDTO)
+        public async Task<ContractAddDTO> Add(ContractAddDTO contractAddDTO, string username)
         {
+            var user = await _unitOfWork.UserRepository.FindByUserName(username);
+            var service = await _unitOfWork.ServiceRepository.GetByIdAsync(contractAddDTO.ServiceId);
+
+            contractAddDTO.ServiceId = service.Id;
             var contract = _mapper.Map<ContractAddDTO, Contract>(contractAddDTO);
 
+            contract.BuyerId = user.Id;
+            contract.SellerId = service.SellerId;
+            var chatRoom = new ChatRoom
+            {
+                BuyerId = user.Id,
+                SellerId = service.SellerId,
+            };
+
+            var chatRoomResult = await _unitOfWork.ChatRoomRepository.AddAsync(chatRoom);
+            contract.ChatRoomId = chatRoomResult.Id;
+
             var result = await _unitOfWork.ContractRepository.AddAsync(contract);
+            chatRoom.ContractId = result.Id;
+
             await _unitOfWork.SaveChangesAsync();
             var contractadd = _mapper.Map<Contract, ContractAddDTO>(result);
             return contractadd;
         }
+
 
 
     }
