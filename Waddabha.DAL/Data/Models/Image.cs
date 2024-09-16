@@ -9,7 +9,9 @@ namespace Waddabha.DAL.Data.Models
         public string? ServiceId { get; set; }
         [JsonIgnore]
         public Service? Service { get; set; }
+        [JsonIgnore]
         public Category? Category { get; set; }
+        [JsonIgnore]
         public User? User { get; set; }
     }
 }

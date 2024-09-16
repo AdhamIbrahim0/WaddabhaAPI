@@ -42,7 +42,7 @@ namespace Waddabha.BL.Managers.Categories
 
         public async Task<IEnumerable<CategoryReadDTO>> GetAll()
         {
-            var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
+            var categories = await _unitOfWork.CategoryRepository.GetCategoriesWithImage();
             var result = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryReadDTO>>(categories);
             return result;
         }

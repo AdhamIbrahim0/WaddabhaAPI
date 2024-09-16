@@ -11,10 +11,12 @@ namespace Waddabha.DAL.Repositories.Categories
         {
         }
 
-        //public Category GetCategoryWithServices(int id)
-        //{
-        //    var category = _context.Categories.Include(c => c.Services).FirstOrDefault(c => c.Id == id);
-        //    return category;
-        //}
+        public async Task<IEnumerable<Category>> GetCategoriesWithImage()
+        {
+            var categories = await _context.Categories
+                .Include(x => x.Image)
+                .AsNoTracking().ToListAsync();
+            return categories;
+        }
     }
 }
