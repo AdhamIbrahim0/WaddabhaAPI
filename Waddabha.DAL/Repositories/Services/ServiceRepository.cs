@@ -18,7 +18,7 @@ namespace Waddabha.DAL.Repositories.Services
                 .Include(x => x.Seller)
                 .Include(x => x.Images)
                 .Include(s => s.Category)
-                .Where(x => x.CategoryId == id).AsNoTracking().ToListAsync();
+                .Where(x => x.CategoryId == id && x.Status == Status.Accepted).AsNoTracking().ToListAsync();
             return services;
         }
 
