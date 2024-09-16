@@ -15,9 +15,11 @@ namespace Waddabha.BL.Managers.Contracts
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ContractReadDTO>> GetAll()
+        public async Task<IEnumerable<ContractReadDTO>> GetAllByUserId(string username)
         {
-            var contracts = await _unitOfWork.ContractRepository.GetAllAsync();
+            var user = await _unitOfWork.UserRepository.FindByUserName(username);
+
+            var contracts = await _unitOfWork.ContractRepository.GetContractsByUserId(user.Id);
             var result = _mapper.Map<IEnumerable<Contract>, IEnumerable<ContractReadDTO>>(contracts);
             return result;
         }
