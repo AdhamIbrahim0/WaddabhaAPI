@@ -6,7 +6,7 @@ namespace Waddabha.BL.Managers.Contracts
     {
        public Task<IEnumerable<ContractReadDTO>> GetAllByUserId(string id);
         Task<ContractReadDTO> GetById(string id);
-        Task<ContractAddDTO> Add(ContractAddDTO categoryAddDTO);
+        Task<ContractAddDTO> Add(ContractAddDTO contractAddDTO, string username);
         Task Delete(string id);
 
     }

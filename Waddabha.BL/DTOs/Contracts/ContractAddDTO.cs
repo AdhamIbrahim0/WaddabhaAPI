@@ -1,4 +1,6 @@
-﻿namespace Waddabha.BL.DTOs.Contracts
+﻿using Waddabha.DAL.Data.Models;
+
+namespace Waddabha.BL.DTOs.Contracts
 {
     public class ContractAddDTO
     {
@@ -8,7 +10,7 @@
         public string? WorkLocation { get; set; }
         public string? Description { get; set; }
         public string ServiceId { get; set; }
-        public string BuyerId { get; set; }
-        public string SellerId { get; set; }
+
+
     }
 }

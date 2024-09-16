@@ -48,11 +48,11 @@ namespace Waddabha.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ContractAddDTO contractAddDTO)
         {
-            var contract = await _contractManager.Add(contractAddDTO);
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var contract = await _contractManager.Add(contractAddDTO, username);
             var response = ApiResponse<ContractAddDTO>.SuccessResponse(contract);
             return Ok(response);
         }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
