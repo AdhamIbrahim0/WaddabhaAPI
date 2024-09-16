@@ -29,7 +29,7 @@ namespace Waddabha.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            var service = await _serviceManager.GetById(id);
+            var service = await _serviceManager.GetByIdWithSeller(id);
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
             return Ok(response);
         }
