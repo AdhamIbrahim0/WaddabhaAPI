@@ -13,7 +13,7 @@ namespace Waddabha.DAL.Data.Models
         public ICollection<Message>? Messages { get; set; }
         public virtual Contract? Contract { get; set; }
         
-        public int? ContractId { get; set; }
+        public string? ContractId { get; set; }
         public virtual Seller Seller { get; set; }
        
         public string SellerId { get; set; }
