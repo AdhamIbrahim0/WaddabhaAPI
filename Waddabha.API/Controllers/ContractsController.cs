@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Contracts;
 using Waddabha.BL.Managers.Contracts;
@@ -19,7 +20,20 @@ namespace Waddabha.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var contracts = await _contractManager.GetAll();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();  
+            }
+           
+            var contracts = await _contractManager.GetAllByUserId(userId);
+
+            if (contracts == null || !contracts.Any())
+            {
+                return NotFound("No contracts found for this user.");
+            }
+
             var response = ApiResponse<IEnumerable<ContractReadDTO>>.SuccessResponse(contracts);
             return Ok(response);
         }
