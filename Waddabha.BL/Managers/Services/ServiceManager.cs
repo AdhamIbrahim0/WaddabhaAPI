@@ -75,14 +75,7 @@ namespace Waddabha.BL.Managers.Services
         }
         public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO,string SellerId)
         {
-            var seller = await _unitOfWork.UserRepository.FindByUserName(SellerId);
 
-            var roles = await _userManager.GetRolesAsync(seller);
-
-            if (!roles.Contains("Seller"))
-            {
-                throw new UnauthorizedAccessException("User is not authorized to add a service.");
-            }
 
             var newService = new Service
             {
@@ -92,7 +85,7 @@ namespace Waddabha.BL.Managers.Services
                 BuyerInstructions = serviceAddDTO.BuyerInstructions,
 /*                SellerId = serviceAddDTO.SellerId,
 */                CategoryId = serviceAddDTO.CategoryId,
-                SellerId= seller.Id
+                SellerId= SellerId
             };
 
             var uploadedImages = await _uploadImage.UploadImagesOnCloudinary(serviceAddDTO.Images);
