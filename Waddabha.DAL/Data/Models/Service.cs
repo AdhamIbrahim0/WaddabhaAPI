@@ -1,4 +1,5 @@
-﻿using Waddabha.DAL.Data.Enums;
+﻿using System.Text.Json.Serialization;
+using Waddabha.DAL.Data.Enums;
 
 namespace Waddabha.DAL.Data.Models
 {
@@ -17,6 +18,7 @@ namespace Waddabha.DAL.Data.Models
         public Category Category { get; set; }
         public string SellerId { get; set; }
         public Seller Seller { get; set; }
+        [JsonIgnore]
         public ICollection<Contract>? Contracts { get; set; }
     }
 }
