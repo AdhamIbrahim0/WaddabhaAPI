@@ -15,8 +15,11 @@ namespace Waddabha.DAL.Repositories.Contracts
         public async Task<IEnumerable<Contract>> GetContractsByUserId(string userId)
         {
             return await _context.Contracts
-                                 .Where(c => c.SellerId == userId)
+                                 .Include(s=>s.Service)
+                                 .Include(b=>b.Buyer)
+                                 .Where(c => c.SellerId == userId)                                 
                                  .ToListAsync(); 
         }
+        
     }
 }
