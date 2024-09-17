@@ -9,24 +9,55 @@ namespace Waddabha.API.Hubs
     [Authorize]
     public class ChatHub : Hub
     {
-        private readonly MessageManager _messageService;
+        private readonly IMessageManager _messageService;
 
-        public ChatHub(MessageManager messageService)
+        public ChatHub(IMessageManager messageService)
         {
             _messageService = messageService;
         }
+        public async Task JoinChatRoom(string chatRoomId)
+        {  
+            await Groups.AddToGroupAsync(Context.ConnectionId, chatRoomId);
+            //await Clients.Group(chatRoomId).SendAsync("ReceiveMessage", "System", $"User {Context.ConnectionId} has joined the chatroom.", DateTime.Now);
+        }
 
-        public async Task SendMessage(string senderId, string receiverId, string content)
+        public async Task LeaveChatRoom(string chatRoomId)
         {
-            var messageAddDTO = new MessageAddDTO
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatRoomId);
+            await Clients.Group(chatRoomId).SendAsync("ReceiveMessage", "System", $"User {Context.ConnectionId} has left the chatroom.", DateTime.Now);
+        }
+        public async Task SendMessageToChatRoom(string senderId, string content, string ChatRoomId)
+        {  
+            try
             {
-                SenderId = senderId,
-                ReceiverId = receiverId,
-                Body = content,
-            };
 
-            await _messageService.SendMessageAsync(messageAddDTO);
-            await Clients.User(receiverId).SendAsync("ReceiveMessage", senderId, content, DateTime.Now);
+                var messageAddDTO = new MessageAddDTO
+                {
+                    SenderId = senderId,
+                    Body = content,
+                    ChatRoomId = ChatRoomId
+
+                };
+
+                await _messageService.SendMessageAsync(messageAddDTO);
+                await Clients.Group(ChatRoomId).SendAsync("ReceiveMessage", senderId, content, DateTime.Now);
+
+            }
+            catch (Exception ex)
+            {
+                // Log the error and provide more context for debugging
+                Console.WriteLine($"Error in SendMessageToChatRoom: {ex.Message}");
+                throw;
+               
+
+
+            }
+        }
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            // You can remove the user from all groups (chat rooms) or perform other cleanup
+            // await Groups.RemoveFromGroupAsync(Context.ConnectionId, chatRoomId); // Example
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

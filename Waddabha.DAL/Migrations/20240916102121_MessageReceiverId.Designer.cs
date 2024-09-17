@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Waddabha.DAL.Data.Context;
 
@@ -11,9 +12,11 @@ using Waddabha.DAL.Data.Context;
 namespace Waddabha.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240916102121_MessageReceiverId")]
+    partial class MessageReceiverId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,7 +203,7 @@ namespace Waddabha.DAL.Migrations
                     b.HasIndex("ImageId")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.ChatRoom", b =>
@@ -212,8 +215,8 @@ namespace Waddabha.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ContractId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ContractId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -228,7 +231,7 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("ChatRooms", (string)null);
+                    b.ToTable("ChatRooms");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Contract", b =>
@@ -290,7 +293,7 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Contracts", (string)null);
+                    b.ToTable("Contracts");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Image", b =>
@@ -316,7 +319,7 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Image", (string)null);
+                    b.ToTable("Image");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Message", b =>
@@ -350,7 +353,7 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Notification", b =>
@@ -384,7 +387,7 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.Service", b =>
@@ -420,10 +423,6 @@ namespace Waddabha.DAL.Migrations
                     b.Property<double?>("Rating")
                         .HasColumnType("float");
 
-                    b.Property<string>("RejectionMessage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SellerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -437,7 +436,7 @@ namespace Waddabha.DAL.Migrations
 
                     b.HasIndex("SellerId");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("Waddabha.DAL.Data.Models.User", b =>

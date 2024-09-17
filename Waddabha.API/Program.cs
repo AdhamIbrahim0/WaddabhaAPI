@@ -20,7 +20,9 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:4200", "http://localhost:5000") // Angular frontend URL
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Required for SignalR
+             .AllowCredentials();
+              
+                            // Required for SignalR
     });
 });
 

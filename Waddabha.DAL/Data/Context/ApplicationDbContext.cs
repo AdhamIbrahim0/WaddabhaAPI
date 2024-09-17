@@ -124,7 +124,7 @@ namespace Waddabha.DAL.Data.Context
             modelBuilder.Entity<Contract>()
                 .HasOne(c => c.ChatRoom)
                 .WithOne(cr => cr.Contract)
-                .HasForeignKey<Contract>(c => c.ChatRoomId)
+                .HasForeignKey<Contract>(c => c.ChatRoomId).IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict); // Ensure no cascade delete for Contract-ChatRoom
 
             // Contract relationship configuration
@@ -147,11 +147,11 @@ namespace Waddabha.DAL.Data.Context
         .OnDelete(DeleteBehavior.Restrict);  // Prevent cascade delete
 
             // Configure the relationship for Receiver
-            modelBuilder.Entity<Message>()
-                .HasOne(m => m.Receiver)
-                .WithMany()
-                .HasForeignKey(m => m.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Message>()
+            //    .HasOne(m => m.Receiver)
+            //    .WithMany()
+            //    .HasForeignKey(m => m.ReceiverId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             //modelBuilder.Entity<Category>()
             //    .HasOne(c => c.Image)              // One Category has one Image

@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Waddabha.BL.CustomExceptions;
 using Waddabha.BL.DTOs.ChatRooms;
+using Waddabha.BL.DTOs.Messages;
+using Waddabha.BL.DTOs.Users;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
 
@@ -45,12 +48,18 @@ namespace Waddabha.BL.Managers.ChatRooms
 
         public async Task<ChatRoomReadDTO> GetById(string id)
         {
-            var ChatRoom = await _unitOfWork.ChatRoomRepository.GetByIdAsync(id);
+            var ChatRoom = await _unitOfWork.ChatRoomRepository.GetChatRoomWithMessages(id);
             if (ChatRoom == null)
             {
-                throw new Exception();//handle the error 
+                throw new RecordNotFoundException();//handle the error 
             }
-            var result = _mapper.Map<ChatRoom, ChatRoomReadDTO>(ChatRoom);
+            var result = new ChatRoomReadDTO {
+                Id = ChatRoom.Id, 
+                CreatedAt = ChatRoom.CreatedAt, 
+                Messages = ChatRoom.Messages.Select(m => _mapper.Map<Message, MessageReadDTO>(m)),
+                SellerId = ChatRoom.SellerId,
+                BuyerId = ChatRoom.BuyerId
+            };
             return result;
         }
 
@@ -58,7 +67,35 @@ namespace Waddabha.BL.Managers.ChatRooms
         {
 
             var chatRooms = await _unitOfWork.ChatRoomRepository.GetChatRoomsByUserId(userId);
+
             var result = _mapper.Map<IEnumerable<ChatRoom>, IEnumerable<ChatRoomReadDTO>>(chatRooms);
+            //var result = chatRooms.Select(cr => new ChatRoomReadDTO
+            //{
+            //    Id = cr.Id,
+            //    CreatedAt = cr.CreatedAt,
+            //    SellerId = cr.SellerId,
+            //    BuyerId = cr.BuyerId,
+            //    Seller = new GetUserDTO { 
+            //        Id = cr.Seller.Id, 
+            //        UserName = cr.Seller.UserName,
+            //        Email = cr.Seller.Email,
+            //        Fname = cr.Seller.Fname,
+            //        Lname = cr.Seller.Lname,
+            //        Role = "Seller",
+            //        Gender = cr.Seller.Gender.ToString(),
+            //        Image = new ImageDto { ImageUrl = cr.Seller.Image.ImageUrl, PublicId = cr.Seller.Image.PublicId} },
+            //    Buyer = new GetUserDTO
+            //    {
+            //        Id = cr.Buyer.Id,
+            //        UserName = cr.Buyer.UserName,
+            //        Email = cr.Buyer.Email,
+            //        Fname = cr.Buyer.Fname,
+            //        Lname = cr.Buyer.Lname,
+            //        Role = "Buyer",
+            //        Gender = cr.Buyer.Gender.ToString(),
+            //        Image = new ImageDto { ImageUrl = cr.Buyer.Image.ImageUrl, PublicId = cr.Buyer.Image.PublicId }
+            //    },
+            //});
             return result;
         }
     }
