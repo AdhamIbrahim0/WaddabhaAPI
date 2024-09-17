@@ -7,5 +7,6 @@ namespace Waddabha.BL.Managers.UploadImage
     {
         Task<Image> UploadImageOnCloudinary(IFormFile file);
         Task<ICollection<Image>> UploadImagesOnCloudinary(IEnumerable<IFormFile> files);
+        Task DeleteImageFromCloudinary(string publicId);
     }
 }

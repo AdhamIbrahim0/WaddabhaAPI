@@ -9,10 +9,11 @@ namespace Waddabha.BL.Managers.UploadImage
     public class UploadImage : IUploadImage
     {
         private readonly IConfiguration _configuration;
-
+        
         public UploadImage(IConfiguration configuration)
         {
             _configuration = configuration;
+            
         }
         public async Task<Image> UploadImageOnCloudinary(IFormFile file)
         {
@@ -95,6 +96,23 @@ namespace Waddabha.BL.Managers.UploadImage
             }
 
             return images;
+        }
+        public async Task DeleteImageFromCloudinary(string publicId)
+        {
+            var deletionParams = new DeletionParams(publicId);
+            var cloudName = _configuration["Cloudinary:CloudName"];
+            var apiKey = _configuration["Cloudinary:ApiKey"];
+            var apiSecret = _configuration["Cloudinary:ApiSecret"];
+
+            Account account = new Account(cloudName, apiKey, apiSecret);
+            Cloudinary cloudinary = new Cloudinary(account);
+
+            var result = await cloudinary.DestroyAsync(deletionParams);
+
+            if (result.Result != "ok")
+            {
+                throw new Exception($"Failed to delete image with PublicId: {publicId}");
+            }
         }
     }
 }

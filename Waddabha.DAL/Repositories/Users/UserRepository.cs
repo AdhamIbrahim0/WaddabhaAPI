@@ -35,5 +35,6 @@ namespace Waddabha.DAL.Repositories.Users
             return await _context.Users.FirstOrDefaultAsync(c => c.UserName == username);
 
         }
+       
     }
 }
