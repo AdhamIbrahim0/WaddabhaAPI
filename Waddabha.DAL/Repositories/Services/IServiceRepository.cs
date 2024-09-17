@@ -8,6 +8,7 @@ namespace Waddabha.DAL.Repositories.Services
     {
         Task<IEnumerable<Service>> GetAllServicesByCategory(string id);
         Task<IEnumerable<Service>> GetServicesByStatus(Status status);
+        Task<IEnumerable<Service>> GetServicesByUserId(string userId);
         Task<Service> GetByIdWithSeller(string id);
     }
 }

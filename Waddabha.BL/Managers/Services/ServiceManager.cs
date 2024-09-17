@@ -8,6 +8,7 @@ using Waddabha.DAL;
 using Waddabha.DAL.Data.Enums;
 using Microsoft.AspNetCore.Identity;
 using Waddabha.DAL.Data.Models;
+using System.Collections.Generic;
 
 
 namespace Waddabha.BL.Managers.Services
@@ -150,6 +151,13 @@ namespace Waddabha.BL.Managers.Services
 
             return result;
         }
+        public async Task<IEnumerable<ServiceReadDTO>> GetAllByUserId(string username)
+        {
+            var user = await _unitOfWork.UserRepository.FindByUserName(username);
+            var services = await _unitOfWork.ServiceRepository.GetServicesByUserId(user.Id);
+            var result = _mapper.Map<IEnumerable <Service>, IEnumerable<ServiceReadDTO>>(services);
+            return result;
+        }
         public async Task<ServiceReadDTO> GetByIdWithSeller(string id)
         {
             var service = await _unitOfWork.ServiceRepository.GetByIdWithSeller(id);
@@ -160,6 +168,7 @@ namespace Waddabha.BL.Managers.Services
             var result = _mapper.Map<Service, ServiceReadDTO>(service);
             return result;
         }
+
 
         public async Task ApproveService(string id)
         {
