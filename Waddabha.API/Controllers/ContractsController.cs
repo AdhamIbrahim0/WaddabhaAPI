@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Contracts;
@@ -46,10 +47,11 @@ namespace Waddabha.API.Controllers
             return Ok(response);
         }
         [HttpPost]
+        [Authorize(Roles ="Buyer")]
         public async Task<IActionResult> Add([FromBody] ContractAddDTO contractAddDTO)
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var contract = await _contractManager.Add(contractAddDTO, username);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var contract = await _contractManager.Add(contractAddDTO, userId);
             var response = ApiResponse<ContractAddDTO>.SuccessResponse(contract);
             return Ok(response);
         }

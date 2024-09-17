@@ -72,10 +72,10 @@ namespace Waddabha.API.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (string.IsNullOrEmpty(userId))
+/*            if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized();  // Handle missing user ID
-            }
+            }*/
             var service = await _serviceManager.Add(serviceAddDTO,userId);
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
             return Ok(response);
