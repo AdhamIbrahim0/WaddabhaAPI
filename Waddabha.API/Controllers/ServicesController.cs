@@ -34,7 +34,7 @@ namespace Waddabha.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("service-by-userId")]
         public async Task<IActionResult> GetServicesByUserId()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
