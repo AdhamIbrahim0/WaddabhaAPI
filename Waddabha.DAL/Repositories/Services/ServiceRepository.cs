@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Waddabha.DAL.Data.Context;
 using Waddabha.DAL.Data.Enums;
 using Waddabha.DAL.Data.Models;
@@ -40,6 +41,13 @@ namespace Waddabha.DAL.Repositories.Services
                 .Include(s => s.Seller)
                 .FirstOrDefaultAsync(s => s.Id == id);
             return service;
+        }
+
+        public async Task<IEnumerable<Service>> GetServicesByUserId(string userId)
+        {
+            return await _context.Services
+                               .Where(c => c.SellerId == userId)
+                                 .ToListAsync();
         }
     }
 }

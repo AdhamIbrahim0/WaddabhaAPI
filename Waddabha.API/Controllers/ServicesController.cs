@@ -34,6 +34,26 @@ namespace Waddabha.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetServicesByUserId()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var services = await _serviceManager.GetAllByUserId(userId);
+
+            if (services == null || !services.Any())
+            {
+                return NotFound("No contracts found for this user.");
+            }
+
+            var response = ApiResponse<IEnumerable<ServiceReadDTO>>.SuccessResponse(services);
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteById(string id)
         {
