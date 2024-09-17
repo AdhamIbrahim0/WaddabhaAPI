@@ -16,10 +16,18 @@ namespace Waddabha.DAL.Repositories.Contracts
         {
             return await _context.Contracts
                                  .Include(s => s.Service)
-                                 .Include(b=>b.Buyer)
+                                 .Include(b=>b.Buyer).ThenInclude(b => b.Image)
+                                 .Include(b=>b.Seller).ThenInclude(b => b.Image)
                                  .Where(c => c.SellerId == userId || c.BuyerId == userId)                                 
                                  .ToListAsync(); 
         }
-        
+        public async Task<Contract> GetContract(string id)
+        {
+            return await _context.Contracts
+                                 .Include(s => s.Service)
+                                 .Include(b => b.Buyer).ThenInclude(b => b.Image)
+                                 .Include(b => b.Seller).ThenInclude(b => b.Image)
+                                 .FirstOrDefaultAsync(c => c.Id == id);
+        }
     }
 }

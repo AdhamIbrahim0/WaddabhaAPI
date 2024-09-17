@@ -224,5 +224,32 @@ namespace Waddabha.BL.Managers.Services
             existingService.RejectionMessage = rejectionMessage;
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<ServiceReadDTO>> GetMyServices(string userId)
+        {
+            var services = await _unitOfWork.ServiceRepository.GetMyServices(userId);
+            var result = services.Select(s => new ServiceReadDTO
+            {
+                Name = s.Name,
+                InitialPrice = s.InitialPrice,
+                Description = s.Description,
+                BuyerInstructions = s.BuyerInstructions,
+                Images = s.Images.Select(i => new ImageDto
+                {
+                    ImageUrl = i.ImageUrl,
+                    PublicId = i.PublicId
+                }).ToList(),  // Mapping images here
+                Status = s.Status.ToString(),
+                Category = _mapper.Map<Category, CategoryReadDTO>(s.Category),
+                Seller = _mapper.Map<Seller, SellerReadDTO>(s.Seller),
+                BuyersCount = s.BuyersCount,
+                Rating = s.Rating,
+                CategoryId = s.CategoryId,
+                Id = s.Id,
+                CreatedAt = s.CreatedAt
+            });
+
+            return result;
+        }
     }
 }

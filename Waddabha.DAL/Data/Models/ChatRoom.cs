@@ -11,7 +11,7 @@ namespace Waddabha.DAL.Data.Models
     public class ChatRoom:BaseEntity
     {
         public ICollection<Message>? Messages { get; set; }
-        public virtual Contract? Contract { get; set; }
+        public virtual ICollection<Contract>? Contracts { get; set; }
         
         public string? ContractId { get; set; }
         public virtual Seller Seller { get; set; }

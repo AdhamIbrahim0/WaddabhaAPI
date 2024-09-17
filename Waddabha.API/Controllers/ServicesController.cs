@@ -26,6 +26,16 @@ namespace Waddabha.API.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "Seller")]
+        [HttpGet("myservices")]
+        public async Task<IActionResult> GetMyServices()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var services = await _serviceManager.GetMyServices(userId);
+            var response = ApiResponse<IEnumerable<ServiceReadDTO>>.SuccessResponse(services);
+            return Ok(response);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {

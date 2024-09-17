@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Waddabha.BL.CustomExceptions;
 using Waddabha.BL.DTOs.Contracts;
 using Waddabha.DAL;
+using Waddabha.DAL.Data.Enums;
 using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.BL.Managers.Contracts
@@ -26,7 +29,7 @@ namespace Waddabha.BL.Managers.Contracts
 
         public async Task<ContractReadDTO> GetById(string id)
         {
-            var contract = await _unitOfWork.ContractRepository.GetByIdAsync(id);
+            var contract = await _unitOfWork.ContractRepository.GetContract(id);
             if (contract == null)
             {
                 throw new Exception("the contract not found!");//handle the error
@@ -46,6 +49,7 @@ namespace Waddabha.BL.Managers.Contracts
             await _unitOfWork.SaveChangesAsync();
         }
 
+        [Authorize(Roles = "Buyer")]
         public async Task<ContractAddDTO> Add(ContractAddDTO contractAddDTO, string userId)
         {
             var service = await _unitOfWork.ServiceRepository.GetByIdAsync(contractAddDTO.ServiceId);
@@ -59,10 +63,19 @@ namespace Waddabha.BL.Managers.Contracts
             {
                 BuyerId = userId,
                 SellerId = service.SellerId,
+                ContractId = contract.Id
             };
 
-            var chatRoomResult = await _unitOfWork.ChatRoomRepository.AddAsync(chatRoom);
-            contract.ChatRoomId = chatRoomResult.Id;
+            var exisitingChatRooms = await _unitOfWork.ChatRoomRepository.GetChatRoomsByUserId(userId);
+            var existingChatRoom = exisitingChatRooms.FirstOrDefault(cr => cr.BuyerId == userId);
+            if (existingChatRoom == null)
+            {
+                var chatRoomResult = await _unitOfWork.ChatRoomRepository.AddAsync(chatRoom);
+                contract.ChatRoomId = chatRoomResult.Id;
+            } else
+            {
+                contract.ChatRoomId = existingChatRoom.Id;
+            }
 
             var result = await _unitOfWork.ContractRepository.AddAsync(contract);
             chatRoom.ContractId = result.Id;
@@ -72,7 +85,30 @@ namespace Waddabha.BL.Managers.Contracts
             return contractadd;
         }
 
+        public async Task AcceptContract(string id)
+        {
+            var existingContract = await _unitOfWork.ContractRepository.GetByIdAsync(id);
 
+            if (existingContract == null)
+            {
+                throw new RecordNotFoundException();
+            }
 
+            existingContract.Status = Status.Accepted;
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task RejectContract(string id)
+        {
+            var existingContract = await _unitOfWork.ContractRepository.GetByIdAsync(id);
+
+            if (existingContract == null)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            existingContract.Status = Status.Rejected;
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

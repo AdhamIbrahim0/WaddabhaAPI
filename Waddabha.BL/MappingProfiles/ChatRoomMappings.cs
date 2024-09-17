@@ -10,7 +10,7 @@ using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.BL.MappingProfiles
 {
-    public class ChatRoomMappings:Profile
+    public class ChatRoomMappings: Profile
     {
         public ChatRoomMappings()
         {
@@ -18,7 +18,9 @@ namespace Waddabha.BL.MappingProfiles
             .ForMember(dest => dest.Buyer, opt => opt.MapFrom(src => src.Buyer))
             .ForMember(dest => dest.Seller, opt => opt.MapFrom(src => src.Seller))
             .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages)).ReverseMap();
-            CreateMap<ChatRoomAddDTO, ChatRoom>().ReverseMap();  
+             CreateMap<ChatRoomAddDTO, ChatRoom>().ReverseMap();
+
+
         }
     }
 }
