@@ -12,6 +12,8 @@ namespace Waddabha.DAL.Repositories.ChatRooms
     public interface IChatRoomRepository: IGenericRepository<ChatRoom>
     {
         Task<IEnumerable<ChatRoom>> GetChatRoomsByUserId(string userId);
+        Task<ChatRoom> GetChatRoomWithMessages(string id);
+
 
     }
     

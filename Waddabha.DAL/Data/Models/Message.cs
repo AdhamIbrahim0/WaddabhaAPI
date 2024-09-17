@@ -10,10 +10,10 @@
         public virtual User Sender { get; set; }
 
         // Foreign Key to the Receiver (User)
-        public string ReceiverId { get; set; }
+        //public string ReceiverId { get; set; }
 
-        // Navigation property for Receiver
-        public virtual User Receiver { get; set; }
+        //// Navigation property for Receiver
+        //public virtual User Receiver { get; set; }
         public virtual ChatRoom ChatRoom { get; set; }
         public string ChatRoomId { get; set; }
     }

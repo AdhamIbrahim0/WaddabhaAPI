@@ -16,12 +16,12 @@ namespace Waddabha.BL.MappingProfiles
         {
             CreateMap<Message, MessageReadDTO>()
                 .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Body))
-            .ForMember(dest => dest.SenderId, opt => opt.MapFrom(src => src.SenderId))
-            .ForMember(dest => dest.ReceiverId, opt => opt.MapFrom(src => src.ReceiverId));
+            .ForMember(dest => dest.SenderId, opt => opt.MapFrom(src => src.SenderId)).ReverseMap();
+            //.ForMember(dest => dest.ReceiverId, opt => opt.MapFrom(src => src.ReceiverId));
             CreateMap<MessageAddDTO, Message>()
             .ForMember(dest => dest.Body, opt => opt.MapFrom(src => src.Body))
             .ForMember(dest => dest.SenderId, opt => opt.MapFrom(src => src.SenderId))
-            .ForMember(dest => dest.ReceiverId, opt => opt.MapFrom(src => src.ReceiverId))
+            //.ForMember(dest => dest.ReceiverId, opt => opt.MapFrom(src => src.ReceiverId))
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
 
         }

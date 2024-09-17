@@ -10,7 +10,8 @@ namespace Waddabha.BL.DTOs.Messages
     {
         public string Body { get; set; }
         public string SenderId { get; set; }
-        public string ReceiverId { get; set; }
+        //public string ReceiverId { get; set; }
+        public string ChatRoomId { get; set; }
       
     }
 }

@@ -14,7 +14,10 @@ namespace Waddabha.BL.MappingProfiles
     {
         public ChatRoomMappings()
         {
-            CreateMap<ChatRoomReadDTO, ChatRoom>().ReverseMap();
+            CreateMap<ChatRoom, ChatRoomReadDTO>()
+            .ForMember(dest => dest.Buyer, opt => opt.MapFrom(src => src.Buyer))
+            .ForMember(dest => dest.Seller, opt => opt.MapFrom(src => src.Seller))
+            .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages)).ReverseMap();
             CreateMap<ChatRoomAddDTO, ChatRoom>().ReverseMap();  
         }
     }

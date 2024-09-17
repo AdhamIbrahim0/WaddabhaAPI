@@ -16,10 +16,16 @@ namespace Waddabha.API.Controllers
             _messageManager = messageManager;
         }
 
-        [HttpGet("{senderId}/{receiverId}")]
-        public async Task<IActionResult> GetMessages(string senderId, string receiverId)
+        //[HttpGet("{senderId}/{receiverId}")]
+        //public async Task<IActionResult> GetMessages(string senderId, string receiverId)
+        //{
+        //    var messages = await _messageManager.GetMessagesAsync(senderId, receiverId);
+        //    return Ok(messages);
+        //}
+        [HttpGet("GetChatHistory")]
+        public async Task<IActionResult> GetChatHistory(string chatRoomId)
         {
-            var messages = await _messageManager.GetMessagesAsync(senderId, receiverId);
+            var messages = await _messageManager.GetMessagesByChatRoomIdAsync(chatRoomId);
             return Ok(messages);
         }
     }
