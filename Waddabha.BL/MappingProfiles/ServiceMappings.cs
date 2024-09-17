@@ -11,7 +11,7 @@ namespace Waddabha.BL.MappingProfiles
         {
             CreateMap<ServiceReadDTO, Service>().ReverseMap();
             CreateMap<ServiceAddDTO, Service>().ReverseMap();
-            CreateMap<ServiceUpdateDTO, Service>().ReverseMap();
+            CreateMap<ServiceUpdateDTO, Service>().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
             CreateMap<Image, ImageDto>()
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.ImageUrl));
         }

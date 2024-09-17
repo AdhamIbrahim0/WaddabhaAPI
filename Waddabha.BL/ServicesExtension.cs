@@ -33,6 +33,7 @@ namespace Waddabha.BL
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<IUploadImage, UploadImage>();
             services.AddScoped<IChatRoomManager, ChatRoomManager>();
+            
 
 
 

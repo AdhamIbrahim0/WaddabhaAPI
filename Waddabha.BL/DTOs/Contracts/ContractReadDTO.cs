@@ -15,7 +15,7 @@ namespace Waddabha.BL.DTOs.Contracts
         public double? Rating { get; set; }
         public string? FeedbackComment { get; set; }
         public virtual Service Service { get; set; }
-
+        public virtual Buyer Buyer { get; set; }
 
     }
 }
