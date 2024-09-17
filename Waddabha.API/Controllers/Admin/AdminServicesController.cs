@@ -9,7 +9,7 @@ namespace Waddabha.API.Controllers.Admin
 {
     [Route("api/admin/services")]
     [ApiController]
-    public class AdminServicesController : ControllerBase
+    public class AdminServicesController : AdminController
     {
         private readonly IServiceManager _serviceManager;
 

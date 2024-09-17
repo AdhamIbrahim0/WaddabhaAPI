@@ -123,8 +123,8 @@ namespace Waddabha.DAL.Data.Context
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Contract>()
                 .HasOne(c => c.ChatRoom)
-                .WithOne(cr => cr.Contract)
-                .HasForeignKey<Contract>(c => c.ChatRoomId).IsRequired(false)
+                .WithMany(cr => cr.Contracts)
+                .HasForeignKey(c => c.ChatRoomId).IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict); // Ensure no cascade delete for Contract-ChatRoom
 
             // Contract relationship configuration

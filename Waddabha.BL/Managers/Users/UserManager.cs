@@ -34,7 +34,24 @@ namespace Waddabha.BL.Managers.Users
             var data = handler.ReadJwtToken(token);
             var userId = data.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var user = await _unitOfWork.UserRepository.GetUserProfileAsync(userId);
-            var result = _mapper.Map<User, GetUserDTO>(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault();
+            //var result = _mapper.Map<User, GetUserDTO>(user);
+            var result = new GetUserDTO
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Fname = user.Fname,
+                Lname = user.Lname,
+                UserName = user.UserName,
+                Role = role,
+                Gender = user.Gender.ToString(),
+                Image = new ImageDto
+                {
+                    ImageUrl = user.Image?.ImageUrl ?? string.Empty,
+                    PublicId = user.Image?.PublicId ?? string.Empty
+                }
+            };
             return result;
         }
 

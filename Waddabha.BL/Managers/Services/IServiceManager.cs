@@ -6,6 +6,7 @@ namespace Waddabha.BL.Managers.Services
     public interface IServiceManager
     {
         Task<IEnumerable<ServiceReadDTO>> GetAllServicesByCategory(string id);
+        Task<IEnumerable<ServiceReadDTO>> GetMyServices(string userId);
         Task<IEnumerable<ServiceReadDTO>> GetServicesByStatus(Status status);
         Task<IEnumerable<ServiceReadDTO>> GetAllByUserId(string id);
         Task<ServiceReadDTO> GetById(string id);

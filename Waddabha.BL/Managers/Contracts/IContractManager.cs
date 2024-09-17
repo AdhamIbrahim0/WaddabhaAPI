@@ -8,6 +8,8 @@ namespace Waddabha.BL.Managers.Contracts
         Task<ContractReadDTO> GetById(string id);
         Task<ContractAddDTO> Add(ContractAddDTO contractAddDTO, string username);
         Task Delete(string id);
+        Task AcceptContract(string id);
+        Task RejectContract(string id);
 
     }
 }

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Contracts;
+using Waddabha.BL.DTOs.Requests;
 using Waddabha.BL.Managers.Contracts;
 
 namespace Waddabha.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ContractsController : ControllerBase
     {
         private readonly IContractManager _contractManager;
@@ -22,11 +24,6 @@ namespace Waddabha.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized();  
-            }
            
             var contracts = await _contractManager.GetAllByUserId(userId);
 
@@ -61,6 +58,20 @@ namespace Waddabha.API.Controllers
             await _contractManager.Delete(id);
             return NoContent();
         }
+        [HttpPost("accept")]
+        public async Task<IActionResult> AcceptContract([FromBody] IdRequest request)
+        {
+            await _contractManager.AcceptContract(request.Id);
+            var response = ApiResponse<string>.SuccessResponse("Contract accepted successfully");
+            return Ok(response);
+        }
 
+        [HttpPost("reject")]
+        public async Task<IActionResult> RejectContract([FromBody] IdRequest request)
+        {
+            await _contractManager.RejectContract(request.Id);
+            var response = ApiResponse<string>.SuccessResponse("Contract rejected successfully");
+            return Ok(response);
+        }
     }
 }

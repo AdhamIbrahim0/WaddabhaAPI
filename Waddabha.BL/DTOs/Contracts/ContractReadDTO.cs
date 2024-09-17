@@ -16,6 +16,7 @@ namespace Waddabha.BL.DTOs.Contracts
         public string? FeedbackComment { get; set; }
         public virtual Service Service { get; set; }
         public virtual Buyer Buyer { get; set; }
+        public string ChatRoomId { get; set; }
 
     }
 }
