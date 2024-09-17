@@ -105,19 +105,54 @@ namespace Waddabha.BL.Managers.Services
             {
                 throw new RecordNotFoundException();
             }
-            if (existingService.Id == id)
-            {
-                _mapper.Map(serviceUpdateDTO, existingService);
-                var result = await _unitOfWork.ServiceRepository.UpdateAsync(existingService);
 
-                await _unitOfWork.SaveChangesAsync();
-                var serviceRead = _mapper.Map<Service, ServiceReadDTO>(result);
+            // Update basic fields using AutoMapper
+            _mapper.Map(serviceUpdateDTO, existingService);
 
-                return serviceRead;
-            }
-            return null;
+            // Retrieve the existing images from the database
+            //var existingImages = existingService.Images;
 
+            // Step 1: Remove images that are no longer part of the service
+            //var imagesToRemove = existingImages
+            //    .Where(img => !serviceUpdateDTO.NewImages
+            //    .Any(e => e.FileName == img.PublicId))  // Assuming file name or publicId is unique
+            //    .ToList();
+
+            //if (imagesToRemove.Any())
+            //{
+            //    foreach (var img in imagesToRemove)
+            //    {
+            //        // Remove the image from Cloudinary
+            //        await _uploadImage.DeleteImageFromCloudinary(img.PublicId);
+            //    }
+
+            //    // Remove the images from the service's image collection
+            //    existingService.Images = existingService.Images
+            //        .Where(img => !imagesToRemove.Contains(img))
+            //        .ToList();
+            //}
+
+            // Step 2: Upload new images
+            //if (serviceUpdateDTO.NewImages != null && serviceUpdateDTO.NewImages.Any())
+            //{
+            //    var newUploadedImages = await _uploadImage.UploadImagesOnCloudinary(serviceUpdateDTO.NewImages);
+
+            //    // Add the new images to the service's image collection
+            //    foreach (var newImage in newUploadedImages)
+            //    {
+            //        existingService.Images.Add(newImage);
+            //    }
+            //}
+
+            // Save changes to the database
+            var updatedService = await _unitOfWork.ServiceRepository.UpdateAsync(existingService);
+            await _unitOfWork.SaveChangesAsync();
+
+            // Map the updated service to DTO
+            var serviceReadDTO = _mapper.Map<Service, ServiceReadDTO>(updatedService);
+            return serviceReadDTO;
         }
+
 
         public async Task<IEnumerable<ServiceReadDTO>> GetServicesByStatus(Status status)
         {
