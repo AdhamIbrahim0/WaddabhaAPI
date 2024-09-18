@@ -5,6 +5,5 @@ namespace Waddabha.BL.Managers.Users
     public interface IUserManager
     {
         Task<GetUserDTO> GetUserFromTokenAsync(string token);
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Waddabha.BL.DTOs.Auth;
+using Waddabha.BL.DTOs.Users;
 using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.BL.Managers.Auth
@@ -11,5 +12,7 @@ namespace Waddabha.BL.Managers.Auth
         Task<string> GenerateJWT(User user);
         Task FindByEmailAsync(string name);
         Task<bool> VerifyOtpAsync(ResetPassDTO ResetPassDTO);
+        Task<Boolean> Update(EditUserDTO editUserDTO, string userId);
+
     }
 }

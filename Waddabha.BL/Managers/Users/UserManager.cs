@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Waddabha.BL.CustomExceptions;
 using Waddabha.BL.DTOs.Users;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
@@ -54,6 +55,25 @@ namespace Waddabha.BL.Managers.Users
             };
             return result;
         }
+
+       /* public async Task<EditUserDTO> Update(EditUserDTO editUserDTO, string userId)
+        {
+            var existingUser = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            if (existingUser == null)
+            {
+                throw new RecordNotFoundException();
+            }
+
+            _mapper.Map(editUserDTO, existingUser);
+
+            var updatedUser = await _unitOfWork.UserRepository.UpdateAsync(existingUser);
+            await _unitOfWork.SaveChangesAsync();
+
+            var updatedUserDTO = _mapper.Map<EditUserDTO>(updatedUser);
+
+            return updatedUserDTO;
+        }*/
+
 
     }
 }
