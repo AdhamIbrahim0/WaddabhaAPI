@@ -26,6 +26,14 @@ namespace Waddabha.API.Controllers
             return Ok(response);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> GetAllByName([FromQuery] string name)
+        {
+            var services = await _serviceManager.GetAllServicesByName(name);
+            var response = ApiResponse<IEnumerable<ServiceReadDTO>>.SuccessResponse(services);
+            return Ok(response);
+        }
+
         [Authorize(Roles = "Seller")]
         [HttpGet("myservices")]
         public async Task<IActionResult> GetMyServices()
@@ -82,11 +90,11 @@ namespace Waddabha.API.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-/*            if (string.IsNullOrEmpty(userId))
-            {
-                return Unauthorized();  // Handle missing user ID
-            }*/
-            var service = await _serviceManager.Add(serviceAddDTO,userId);
+            /*            if (string.IsNullOrEmpty(userId))
+                        {
+                            return Unauthorized();  // Handle missing user ID
+                        }*/
+            var service = await _serviceManager.Add(serviceAddDTO, userId);
             var response = ApiResponse<ServiceReadDTO>.SuccessResponse(service);
             return Ok(response);
         }
