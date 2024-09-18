@@ -22,6 +22,7 @@ namespace Waddabha.BL.MappingProfiles
             CreateMap<Image, ImageDto>().ReverseMap().ForMember(dest => dest.Service, opt => opt.Ignore());
 
             CreateMap<EditUserDTO, User>().ReverseMap();
+            CreateMap<SellerReadDTO, User>().ReverseMap();
 
         }
     }

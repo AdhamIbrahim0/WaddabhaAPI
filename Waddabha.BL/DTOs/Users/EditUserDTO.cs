@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace Waddabha.BL.DTOs.Users
 {
@@ -7,7 +8,9 @@ namespace Waddabha.BL.DTOs.Users
         public string? Fname { get; set; }
         public string? Lname { get; set; }
         public string? Gender { get; set; }
-        
+        public IFormFile? Image { get; set; }
+        public string? JobTitle { get; set; }
+
 
     }
 }

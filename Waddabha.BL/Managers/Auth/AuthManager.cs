@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Waddabha.BL.DTOs.Auth;
+using Waddabha.BL.DTOs.Users;
 using Waddabha.BL.Managers.UploadImage;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Models;
@@ -194,6 +195,21 @@ namespace Waddabha.BL.Managers.Auth
             {
                 return false;
             }
+        }
+
+       public async Task<Boolean> Update(EditUserDTO editUserDTO, string userId)
+        {
+            var existingUser = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            if (existingUser == null)
+            {
+                throw new Exception("Try Again");
+            }
+            var uploadResult = await _uploadImage.UploadImageOnCloudinary(editUserDTO.Image);
+            existingUser.Image = uploadResult;
+            existingUser.Fname = editUserDTO.Fname;
+            existingUser.Lname = editUserDTO.Lname;
+            var res = await _userManager.UpdateAsync(existingUser);
+            return true;
         }
 
     }

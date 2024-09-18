@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Waddabha.API.ResponseModels;
 using Waddabha.BL.DTOs.Auth;
+using Waddabha.BL.DTOs.Services;
+using Waddabha.BL.DTOs.Users;
 using Waddabha.BL.Managers.Auth;
+using Waddabha.BL.Managers.Users;
+using Waddabha.DAL.Data.Models;
 
 namespace Waddabha.API.Controllers
 {
@@ -63,7 +69,14 @@ namespace Waddabha.API.Controllers
             }
         }
 
-
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(EditUserDTO userDTO)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user =  await _authManager.Update(userDTO, userId);
+            var response = ApiResponse<Boolean>.SuccessResponse(true);
+            return Ok(response);
+        }
 
     }
 }
