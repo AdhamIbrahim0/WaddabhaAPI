@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Waddabha.BL.CustomExceptions;
 using Waddabha.BL.DTOs.Categories;
 using Waddabha.BL.DTOs.Services;
@@ -6,9 +7,7 @@ using Waddabha.BL.DTOs.Users;
 using Waddabha.BL.Managers.UploadImage;
 using Waddabha.DAL;
 using Waddabha.DAL.Data.Enums;
-using Microsoft.AspNetCore.Identity;
 using Waddabha.DAL.Data.Models;
-using System.Collections.Generic;
 
 
 namespace Waddabha.BL.Managers.Services
@@ -19,7 +18,7 @@ namespace Waddabha.BL.Managers.Services
         private readonly IMapper _mapper;
         private readonly IUploadImage _uploadImage;
         private readonly UserManager<User> _userManager;
-        public ServiceManager(UserManager<User> userManager,IUploadImage uploadImage, IUnitOfWork unitOfWork, IMapper mapper)
+        public ServiceManager(UserManager<User> userManager, IUploadImage uploadImage, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -73,7 +72,7 @@ namespace Waddabha.BL.Managers.Services
             await _unitOfWork.ServiceRepository.DeleteAsync(service);
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO,string SellerId)
+        public async Task<ServiceReadDTO> Add(ServiceAddDTO serviceAddDTO, string SellerId)
         {
 
 
@@ -83,9 +82,10 @@ namespace Waddabha.BL.Managers.Services
                 InitialPrice = serviceAddDTO.InitialPrice,
                 Description = serviceAddDTO.Description,
                 BuyerInstructions = serviceAddDTO.BuyerInstructions,
-/*                SellerId = serviceAddDTO.SellerId,
-*/                CategoryId = serviceAddDTO.CategoryId,
-                SellerId= SellerId
+                /*                SellerId = serviceAddDTO.SellerId,
+                */
+                CategoryId = serviceAddDTO.CategoryId,
+                SellerId = SellerId
             };
 
             var uploadedImages = await _uploadImage.UploadImagesOnCloudinary(serviceAddDTO.Images);
@@ -183,7 +183,7 @@ namespace Waddabha.BL.Managers.Services
         {
             var user = await _unitOfWork.UserRepository.FindByUserName(username);
             var services = await _unitOfWork.ServiceRepository.GetServicesByUserId(user.Id);
-            var result = _mapper.Map<IEnumerable <Service>, IEnumerable<ServiceReadDTO>>(services);
+            var result = _mapper.Map<IEnumerable<Service>, IEnumerable<ServiceReadDTO>>(services);
             return result;
         }
         public async Task<ServiceReadDTO> GetByIdWithSeller(string id)
@@ -228,6 +228,33 @@ namespace Waddabha.BL.Managers.Services
         public async Task<IEnumerable<ServiceReadDTO>> GetMyServices(string userId)
         {
             var services = await _unitOfWork.ServiceRepository.GetMyServices(userId);
+            var result = services.Select(s => new ServiceReadDTO
+            {
+                Name = s.Name,
+                InitialPrice = s.InitialPrice,
+                Description = s.Description,
+                BuyerInstructions = s.BuyerInstructions,
+                Images = s.Images.Select(i => new ImageDto
+                {
+                    ImageUrl = i.ImageUrl,
+                    PublicId = i.PublicId
+                }).ToList(),  // Mapping images here
+                Status = s.Status.ToString(),
+                Category = _mapper.Map<Category, CategoryReadDTO>(s.Category),
+                Seller = _mapper.Map<Seller, SellerReadDTO>(s.Seller),
+                BuyersCount = s.BuyersCount,
+                Rating = s.Rating,
+                CategoryId = s.CategoryId,
+                Id = s.Id,
+                CreatedAt = s.CreatedAt
+            });
+
+            return result;
+        }
+
+        public async Task<IEnumerable<ServiceReadDTO>> GetAllServicesByName(string name)
+        {
+            var services = await _unitOfWork.ServiceRepository.GetAllServicesByName(name);
             var result = services.Select(s => new ServiceReadDTO
             {
                 Name = s.Name,
