@@ -10,7 +10,7 @@ namespace Waddabha.BL.MappingProfiles
         {
             CreateMap<CategoryReadDTO, Category>().ReverseMap();
             CreateMap<CategoryAddDTO, Category>().ForMember(dest => dest.Image, opt => opt.Ignore());
-            CreateMap<CategoryUpdateDTO, Category>().ReverseMap();
+            CreateMap<CategoryUpdateDTO, Category>().ForMember(dest => dest.Image, opt => opt.Ignore());
         }
     }
 }
