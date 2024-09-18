@@ -67,12 +67,13 @@ namespace Waddabha.BL.Managers.Contracts
             };
 
             var exisitingChatRooms = await _unitOfWork.ChatRoomRepository.GetChatRoomsByUserId(userId);
-            var existingChatRoom = exisitingChatRooms.FirstOrDefault(cr => cr.BuyerId == userId);
+            var existingChatRoom = exisitingChatRooms.FirstOrDefault(cr => cr.BuyerId == userId && cr.SellerId == contract.SellerId);
             if (existingChatRoom == null)
             {
                 var chatRoomResult = await _unitOfWork.ChatRoomRepository.AddAsync(chatRoom);
                 contract.ChatRoomId = chatRoomResult.Id;
-            } else
+            }
+            else
             {
                 contract.ChatRoomId = existingChatRoom.Id;
             }

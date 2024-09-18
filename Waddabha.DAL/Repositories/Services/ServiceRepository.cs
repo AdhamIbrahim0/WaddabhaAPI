@@ -18,6 +18,7 @@ namespace Waddabha.DAL.Repositories.Services
                 .Include(x => x.Seller)
                 .Include(x => x.Images)
                 .Include(s => s.Category)
+                .OrderBy(x => x.CreatedAt)
                 .Where(x => x.CategoryId == id && x.Status == Status.Accepted).AsNoTracking().ToListAsync();
             return services;
         }
@@ -28,6 +29,7 @@ namespace Waddabha.DAL.Repositories.Services
                 .Include(x => x.Seller)
                 .Include(x => x.Images)
                 .Include(s => s.Category)
+                .OrderBy(x => x.CreatedAt)
                 .Where(x => x.SellerId == userId).AsNoTracking().ToListAsync();
             return services;
         }
@@ -38,6 +40,7 @@ namespace Waddabha.DAL.Repositories.Services
                 .Include(x => x.Seller)
                 .Include(x => x.Images)
                 .Include(s => s.Category)
+                .OrderBy(x => x.CreatedAt)
                 .Where(x => x.Status == status).AsNoTracking().ToListAsync();
             return services;
         }
@@ -56,6 +59,7 @@ namespace Waddabha.DAL.Repositories.Services
         {
             return await _context.Services
                                .Where(c => c.SellerId == userId)
+                                .OrderBy(c => c.CreatedAt)
                                  .ToListAsync();
         }
 
@@ -65,7 +69,8 @@ namespace Waddabha.DAL.Repositories.Services
                             .Include(x => x.Seller)
                             .Include(x => x.Images)
                             .Include(s => s.Category)
-                            .Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.Status == Status.Accepted).AsNoTracking().ToListAsync();
+                            .Where(x => x.Name.ToLower().Contains(name.ToLower()) && x.Status == Status.Accepted)
+                            .OrderBy(x => x.CreatedAt).AsNoTracking().ToListAsync();
             return services;
         }
     }

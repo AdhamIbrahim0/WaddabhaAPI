@@ -14,7 +14,7 @@ namespace Waddabha.DAL.Repositories.Categories
         public async Task<IEnumerable<Category>> GetCategoriesWithImage()
         {
             var categories = await _context.Categories
-                .Include(x => x.Image)
+                .Include(x => x.Image).OrderBy(x => x.CreatedAt)
                 .AsNoTracking().ToListAsync();
             return categories;
         }

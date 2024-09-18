@@ -64,9 +64,11 @@ namespace Waddabha.BL.Managers.Categories
             if (existingCategory.Id == id)
             {
                 _mapper.Map(categoryUpdateDTO, existingCategory);
+                var uploadedImage = await _uploadImage.UploadImageOnCloudinary(categoryUpdateDTO.Image);
+                existingCategory.Image = uploadedImage;
                 var result = await _unitOfWork.CategoryRepository.UpdateAsync(existingCategory);
 
-                _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
                 var categoryRead = _mapper.Map<Category, CategoryReadDTO>(result);
 
                 return categoryRead;
